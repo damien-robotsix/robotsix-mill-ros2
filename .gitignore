@@ -1,0 +1,8 @@
+# Cloned workspace sources are managed via repos.yaml, never committed
+/src/*
+!/src/.gitkeep
+
+# ROS2 / colcon build artifacts
+/build/
+/install/
+/log/
