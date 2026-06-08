@@ -6,9 +6,9 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-# Verify vcstool is available before doing anything else.
+# Verify vcs2l is available before doing anything else.
 if ! command -v vcs >/dev/null 2>&1; then
-  echo "vcstool not found — install it with: pip install vcstool (or: sudo apt install python3-vcstool)" >&2
+  echo "vcs2l not found — install it with: pip install vcs2l (or: sudo apt install python3-vcs2l)" >&2
   exit 1
 fi
 

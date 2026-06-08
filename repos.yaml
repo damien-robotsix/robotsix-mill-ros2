@@ -1,8 +1,8 @@
-# vcstool manifest (https://github.com/dirk-thomas/vcstool)
+# vcs2l manifest (https://github.com/ros-infrastructure/vcs2l)
 #
 # Each entry under `repositories:` is keyed by the destination path
-# *relative to the directory vcs imports into* (here: `src/`). The
-# `type`, `url`, and `version` (branch/tag/commit) fields tell vcstool
+# *relative to the directory vcs2l imports into* (here: `src/`). The
+# `type`, `url`, and `version` (branch/tag/commit) fields tell vcs2l
 # what to clone and which ref to check out.
 #
 # Add more repositories by listing additional entries under
