@@ -2,14 +2,14 @@
 
 A minimal ROS2 workspace skeleton. The workspace sources are not
 committed to this repository — instead they are declared in a
-[`vcstool`](https://github.com/dirk-thomas/vcstool) manifest and cloned
+[`vcs2l`](https://github.com/ros-infrastructure/vcs2l) manifest and cloned
 into `src/` on demand.
 
 ## Layout
 
 ```
 .
-├── repos.yaml                 # vcstool manifest: which repos to clone into src/
+├── repos.yaml                 # vcs2l manifest: which repos to clone into src/
 ├── scripts/update_workspace.sh # clones/updates src/ from repos.yaml
 └── src/                       # workspace source root (contents are git-ignored)
 ```
@@ -20,13 +20,13 @@ colcon build outputs (`build/`, `install/`, `log/`) are git-ignored too.
 
 ## Prerequisites
 
-- [`vcstool`](https://github.com/dirk-thomas/vcstool), providing the
+- [`vcs2l`](https://github.com/ros-infrastructure/vcs2l), providing the
   `vcs` command. Install it with:
 
   ```sh
-  pip install vcstool
+  pip install vcs2l
   # or, on Debian/Ubuntu:
-  sudo apt install python3-vcstool
+  sudo apt install python3-vcs2l
   ```
 
 ## Populating / updating the workspace
