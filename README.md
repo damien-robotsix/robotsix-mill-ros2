@@ -40,3 +40,22 @@ then run:
 
 This imports every repo listed in `repos.yaml` into `src/` and pulls
 updates for any already-cloned repos, so it is safe to re-run.
+
+## Pre-commit hooks
+
+This repository uses [pre-commit](https://pre-commit.com/) to catch
+simple issues (YAML syntax errors, trailing whitespace, shell script
+mistakes, accidentally-committed large files) before a commit is
+created.  To install the hooks:
+
+```sh
+pip install pre-commit
+pre-commit install
+```
+
+After installation, the hooks run automatically on every `git commit`.
+You can also run them on-demand against all files:
+
+```sh
+pre-commit run --all-files
+```
