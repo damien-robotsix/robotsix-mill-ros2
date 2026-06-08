@@ -1,0 +1,5 @@
+---
+# yamllint configuration for robotsix-mill-ros2
+# Project convention: YAML files do not use "---" document-start markers.
+rules:
+  document-start: disable
