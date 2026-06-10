@@ -29,6 +29,12 @@ colcon build outputs (`build/`, `install/`, `log/`) are git-ignored too.
   sudo apt install python3-vcs2l
   ```
 
+  If the `vcs` command is missing, `./scripts/update_workspace.sh` will
+  attempt to install it automatically (via `pip install --user vcs2l`).
+  A network connection is required both for that bootstrap and for the
+  subsequent clone/import step, so a network-isolated environment cannot
+  populate the workspace even after `vcs2l` is installed.
+
 ## Populating / updating the workspace
 
 Add the repositories you want under `repositories:` in `repos.yaml`,
