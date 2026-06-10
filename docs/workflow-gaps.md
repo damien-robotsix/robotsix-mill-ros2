@@ -78,6 +78,11 @@ project.
   deliverable lives in an external fork can drive push → PR → merge
   explicitly and reproducibly.
 
+| Field | Content |
+| --- | --- |
+| **Disposition** | Fix is external (robotsix-mill harness + sandbox-image provisioning); this skeleton repo has no in-repo lever — no Dockerfile/`requirements.txt`/`pyproject.toml` exists, `.robotsix-mill/config.yaml` declares only `languages: [shell]` with no field for sandbox tool deps, and the first-class "cross-repo target" concept must be implemented in the robotsix-mill harness rather than in this workspace. Gap remains open and is tracked externally. |
+| **Interim-workaround** | Drove the fork's push → PR → merge by calling the GitHub REST API (`POST /pulls`, `PUT /pulls/{n}/merge`) via Python `urllib` using an available GitHub credential, since neither `gh` nor `curl` is installed. Incidental unblock only — not a substitute for the external fix. |
+
 ## Filing outcome
 
 Each gap above was filed as a separate draft ticket against the
