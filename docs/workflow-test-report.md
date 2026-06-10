@@ -79,7 +79,10 @@ robotsix-mill):
    `ConfigError: Required config file not found: config/mill.defaults.yaml`
    because the board/config is not mounted in the workspace checkout.
    There is no mechanism for an in-repo ticket to read a sibling epic
-   child, so the placeholder fallback had to be used.
+   child, so the placeholder fallback had to be used. The remediation is
+   an external-harness change with no in-repo lever, so in-workspace
+   tickets should use the `report_issue` fallback plus the placeholder
+   path in the interim (see `docs/workflow-gaps.md`, Gap 2).
 3. **The work to be delivered lives in an external fork, but the ticket
    runs against the workspace repo.** Driving the fork's contribution
    workflow (push, PR, merge) depended on a GitHub credential that

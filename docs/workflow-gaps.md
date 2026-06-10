@@ -41,6 +41,20 @@ project.
 - **Proposed remediation:** Mount the board config in the workspace
   checkout (or provide a cross-repo board-read mechanism) so an in-repo
   ticket can read sibling epic children.
+- **Disposition:** The fix is **external to this repository**. It
+  requires the milltools execution harness to mount the board config
+  (`config/mill.defaults.yaml` or equivalent) into the workspace
+  checkout, or to expose a cross-repo board-read API. This thin ROS2
+  workspace skeleton has **no in-repo lever** — `.robotsix-mill/config.yaml`
+  only carries `languages: [...]` and has no field to declare a board
+  mount (and none must be invented).
+- **Interim workaround:** Until the external fix lands, in-workspace
+  tickets should (a) treat the sibling ticket's content as unavailable
+  and implement the placeholder / spec-defined fallback, and (b) file
+  board tickets via the `report_issue` milltools tool (which works
+  despite the network-isolated `run_command` sandbox) rather than the
+  `robotsix-mill` CLI, capturing any unmet cross-repo need as a workflow
+  gap.
 
 ## Gap 3 — Deliverable lives in an external fork while the ticket runs against the workspace repo
 
