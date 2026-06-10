@@ -90,6 +90,16 @@ robotsix-mill):
    the GitHub REST API via `urllib` because neither the `gh` CLI nor
    `curl` is installed. A first-class "cross-repo target" concept would
    make this explicit and reproducible rather than incidental.
+4. **pip `--user` bin dir (`/tmp/.local/bin`) is not on the sandbox
+   `PATH`.** `pip:`-prefixed `extra_sandbox_packages` install their
+   console scripts into `$HOME/.local/bin` (`/tmp/.local/bin`, since
+   `HOME=/tmp`), which is absent from `PATH`, so a `test_command` that
+   invokes such a tool by its bare name fails with `not found`
+   (rc 127) even though the package installed cleanly. The remediation
+   is an external-harness change (prepend the pip `--user` bin dir to
+   `PATH` in `sandbox.py`); the in-repo interim workaround is to make
+   the `test_command` self-contained by prepending `$HOME/.local/bin`
+   to `PATH` (see `docs/workflow-gaps.md`, Gap 4).
 
 No other blockers were encountered; the end-to-end path (feature →
 branch → commit → PR → merge → workspace pull) completed successfully.

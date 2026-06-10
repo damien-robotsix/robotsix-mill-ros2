@@ -83,6 +83,40 @@ project.
 | **Disposition** | Fix is external (robotsix-mill harness + sandbox-image provisioning); this skeleton repo has no in-repo lever — no Dockerfile/`requirements.txt`/`pyproject.toml` exists, `.robotsix-mill/config.yaml` declares only `languages: [shell]` with no field for sandbox tool deps, and the first-class "cross-repo target" concept must be implemented in the robotsix-mill harness rather than in this workspace. Gap remains open and is tracked externally. |
 | **Interim-workaround** | Drove the fork's push → PR → merge by calling the GitHub REST API (`POST /pulls`, `PUT /pulls/{n}/merge`) via Python `urllib` using an available GitHub credential, since neither `gh` nor `curl` is installed. Incidental unblock only — not a substitute for the external fix. |
 
+## Gap 4 — pip `--user` bin dir (`/tmp/.local/bin`) is not on the sandbox `PATH`
+
+- **Title:** Prepend the pip `--user` bin dir (`$HOME/.local/bin`) to
+  sandbox `PATH` before running `test_command`
+- **Category:** `workflow-improvement`
+- **Problem:** `pip:`-prefixed `extra_sandbox_packages` are installed
+  with `pip install --user`, landing console scripts in
+  `/tmp/.local/bin` (the `$HOME/.local/bin` scripts dir, since
+  `HOME=/tmp`), which is not on the sandbox `PATH`; a `test_command`
+  invoking such a tool by bare name fails with rc 127.
+- **Impact:** Any repo whose `test_command` calls a `pip:`-installed
+  tool by its bare command name (e.g. `yamllint`, `vcs`) hits a false
+  `not found` failure in the implement test-gate even though the
+  package installed cleanly. Separately, `apt:`-prefixed installs
+  (e.g. `apt:shellcheck`) are denied because the sandbox user is
+  non-root.
+- **Evidence / repro:** `test_command: yamllint --strict . && ...`
+  with `extra_sandbox_packages: ["pip:yamllint", ...]` →
+  `sh: 1: yamllint: not found` (rc 127). In-sandbox checks:
+  `HOME=/tmp`; `sysconfig` user scripts path = `/tmp/.local/bin`;
+  `PATH` does not contain it; `whoami=mill` (non-root, so `apt:`
+  installs fail).
+- **Proposed remediation:** In the `robotsix_mill` sandbox machinery
+  (`sandbox.py` / `_build_extra_packages_prefix`), prepend the pip
+  `--user` bin dir (`$HOME/.local/bin`, equivalently
+  `python3 -m site --user-base`/`bin`) to `PATH` before executing
+  `test_command`; and grant the `apt:` install path the privileges
+  (or pre-baked image packages) it needs.
+
+| Field | Content |
+| --- | --- |
+| **Disposition** | Fix is **external** (robotsix-mill harness `sandbox.py` / `_build_extra_packages_prefix` + sandbox-image privileges for apt); this skeleton repo has no in-repo lever over the harness `PATH` construction. Gap remains open and is tracked externally. |
+| **Interim-workaround** | For `pip:`-installed tools, make the `test_command` self-contained by prepending the user bin dir, e.g. `PATH="$HOME/.local/bin:$PATH" yamllint --strict . && PATH="$HOME/.local/bin:$PATH" vcs validate --input repos.yaml` (or invoke via `python3 -m <module>` where the tool supports it). This does **not** help `apt:`-only tools such as `shellcheck`, which stay blocked until the external fix lands. |
+
 ## Filing outcome
 
 Each gap above was filed as a separate draft ticket against the
@@ -98,6 +132,14 @@ blocked by gap #2 — therefore `report_issue` was used.
 | 1 | `20260610T001407Z-provision-vcs2l-in-the-execution-sandbox-2cb7` | Provision `vcs2l` in the execution sandbox for workspace-targeted tickets | `missing-tool` |
 | 2 | `20260610T001411Z-provide-board-config-access-for-in-works-22b5` | Provide board/config access for in-workspace tickets to read sibling epic children | `missing-input` |
 | 3 | `20260610T001415Z-introduce-a-first-class-cross-repo-targe-596b` | Introduce a first-class cross-repo target concept and provision `gh`/`curl` | `workflow-improvement` |
+| 4 | `20260610T094408Z-test-gate-sandbox-pip-user-bin-dir-tmp-l-a08c` | Prepend the pip `--user` bin dir (`$HOME/.local/bin`) to sandbox `PATH` before running `test_command` | `workflow-improvement` |
+
+Gap 4 is already represented on the board by the present ticket; **no
+new board ticket was filed** for it. The id recorded above is a
+known likely-duplicate draft
+(`20260610T094408Z-test-gate-sandbox-pip-user-bin-dir-tmp-l-a08c`) — a
+duplicate report exists, so an operator should consolidate it with
+this ticket's own draft.
 
 Each gap entry above doubles as the ready-to-file payload (Title /
 Category / Problem / Impact / Evidence / Proposed remediation) should an
