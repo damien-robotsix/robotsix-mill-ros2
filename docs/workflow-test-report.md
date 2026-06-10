@@ -90,16 +90,20 @@ robotsix-mill):
    the GitHub REST API via `urllib` because neither the `gh` CLI nor
    `curl` is installed. A first-class "cross-repo target" concept would
    make this explicit and reproducible rather than incidental.
-4. **pip `--user` bin dir (`/tmp/.local/bin`) is not on the sandbox
-   `PATH`.** `pip:`-prefixed `extra_sandbox_packages` install their
-   console scripts into `$HOME/.local/bin` (`/tmp/.local/bin`, since
-   `HOME=/tmp`), which is absent from `PATH`, so a `test_command` that
-   invokes such a tool by its bare name fails with `not found`
-   (rc 127) even though the package installed cleanly. The remediation
-   is an external-harness change (prepend the pip `--user` bin dir to
-   `PATH` in `sandbox.py`); the in-repo interim workaround is to make
-   the `test_command` self-contained by prepending `$HOME/.local/bin`
-   to `PATH` (see `docs/workflow-gaps.md`, Gap 4).
+4. **Implement sandbox: noexec `$HOME` + non-root block
+   `test_command` tools.** `HOME=/tmp` and `/tmp` is mounted
+   **noexec**, so `pip:`-prefixed `extra_sandbox_packages` console
+   scripts under `$HOME/.local/bin` (`/tmp/.local/bin`) — and any
+   pip-bundled native binaries — cannot exec; invoking them, **even
+   with `$HOME/.local/bin` on `PATH`**, fails **rc 126 Permission
+   denied** (not rc 127 `not found`) even though the package installed
+   cleanly. The user is `mill` (non-root), so `apt:` installs are
+   denied. The remediation is an external-harness change (mount
+   `$HOME` exec / drop noexec and prepend the user bin dir / privileged
+   apt phase); the only working interim workaround is to invoke tools
+   as `python3 -m <module>` (the interpreter on exec `/usr/bin` imports
+   the module from noexec `/tmp`), and `apt:`-only tools such as
+   `shellcheck` stay CI-only (see `docs/workflow-gaps.md`, Gap 4).
 
 No other blockers were encountered; the end-to-end path (feature →
 branch → commit → PR → merge → workspace pull) completed successfully.
