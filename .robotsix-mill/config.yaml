@@ -1,2 +1,10 @@
-# robotsix-mill repository configuration
+# robotsix-mill repository configuration for the ROS2 workspace skeleton
 languages: [shell]
+# Implement test-gate: run the two CI checks that are executable in the
+# non-root, noexec-$HOME sandbox via `python3 -m` (console scripts under
+# $HOME/.local/bin cannot exec). shellcheck stays a CI-only gate.
+test_command: >-
+  python3 -m yamllint --strict . &&
+  python3 -m vcs2l.commands.vcs validate --input repos.yaml
+# Tools the test_command imports (pip --user); mirrors CI's pip installs.
+extra_sandbox_packages: ["pip:yamllint", "pip:vcs2l"]
