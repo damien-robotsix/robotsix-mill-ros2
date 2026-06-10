@@ -83,39 +83,42 @@ project.
 | **Disposition** | Fix is external (robotsix-mill harness + sandbox-image provisioning); this skeleton repo has no in-repo lever — no Dockerfile/`requirements.txt`/`pyproject.toml` exists, `.robotsix-mill/config.yaml` declares only `languages: [shell]` with no field for sandbox tool deps, and the first-class "cross-repo target" concept must be implemented in the robotsix-mill harness rather than in this workspace. Gap remains open and is tracked externally. |
 | **Interim-workaround** | Drove the fork's push → PR → merge by calling the GitHub REST API (`POST /pulls`, `PUT /pulls/{n}/merge`) via Python `urllib` using an available GitHub credential, since neither `gh` nor `curl` is installed. Incidental unblock only — not a substitute for the external fix. |
 
-## Gap 4 — pip `--user` bin dir (`/tmp/.local/bin`) is not on the sandbox `PATH`
+## Gap 4 — Implement sandbox: noexec `$HOME` + non-root block `test_command` tools (only `python3 -m` works)
 
-- **Title:** Prepend the pip `--user` bin dir (`$HOME/.local/bin`) to
-  sandbox `PATH` before running `test_command`
+- **Title:** Implement sandbox: noexec `$HOME` + non-root block
+  `test_command` tools (only `python3 -m` works)
 - **Category:** `workflow-improvement`
-- **Problem:** `pip:`-prefixed `extra_sandbox_packages` are installed
-  with `pip install --user`, landing console scripts in
-  `/tmp/.local/bin` (the `$HOME/.local/bin` scripts dir, since
-  `HOME=/tmp`), which is not on the sandbox `PATH`; a `test_command`
-  invoking such a tool by bare name fails with rc 127.
-- **Impact:** Any repo whose `test_command` calls a `pip:`-installed
-  tool by its bare command name (e.g. `yamllint`, `vcs`) hits a false
-  `not found` failure in the implement test-gate even though the
-  package installed cleanly. Separately, `apt:`-prefixed installs
-  (e.g. `apt:shellcheck`) are denied because the sandbox user is
-  non-root.
-- **Evidence / repro:** `test_command: yamllint --strict . && ...`
-  with `extra_sandbox_packages: ["pip:yamllint", ...]` →
-  `sh: 1: yamllint: not found` (rc 127). In-sandbox checks:
-  `HOME=/tmp`; `sysconfig` user scripts path = `/tmp/.local/bin`;
-  `PATH` does not contain it; `whoami=mill` (non-root, so `apt:`
-  installs fail).
-- **Proposed remediation:** In the `robotsix_mill` sandbox machinery
-  (`sandbox.py` / `_build_extra_packages_prefix`), prepend the pip
-  `--user` bin dir (`$HOME/.local/bin`, equivalently
-  `python3 -m site --user-base`/`bin`) to `PATH` before executing
-  `test_command`; and grant the `apt:` install path the privileges
-  (or pre-baked image packages) it needs.
+- **Problem:** `HOME=/tmp` and `/tmp` is mounted **noexec**
+  (`tmpfs … nosuid,nodev,noexec`). `pip:`-prefixed
+  `extra_sandbox_packages` install with `pip install --user`, landing
+  console scripts in `$HOME/.local/bin` (`/tmp/.local/bin`) and any
+  pip-bundled native binaries under `/tmp`; because `/tmp` is noexec,
+  those files cannot be executed — invoking them, **even with
+  `$HOME/.local/bin` on `PATH`**, fails **rc 126 Permission denied**
+  (NOT rc 127 `not found`). Separately, the sandbox user is `mill`
+  (**non-root**), so `apt:`-prefixed installs are denied (dpkg lock).
+- **Impact:** Both bare-name AND `PATH`-prepended invocations of a
+  `pip:`-installed console script (e.g. `yamllint`, `vcs`) fail in the
+  implement test-gate even though the package installed cleanly; only
+  `python3 -m <module>` works (the interpreter lives on exec
+  `/usr/bin` and merely *imports* the module from noexec `/tmp`).
+  `apt:`-only tools (e.g. `shellcheck`) have **no** runnable
+  in-sandbox path at all, forcing the local gate to diverge from CI
+  for those checks.
+- **Evidence / repro:** mount flags show `/tmp … noexec`;
+  `HOME=/tmp`; `whoami=mill` (non-root). Invoking a `--user` console
+  script — with or without `PATH="$HOME/.local/bin:$PATH"` — →
+  **rc 126 Permission denied**. `apt:` installs fail with a dpkg lock
+  (non-root).
+- **Proposed remediation:** In the `robotsix_mill` sandbox machinery,
+  do any of — mount `$HOME` exec; drop noexec on `$HOME` **and**
+  prepend `$HOME/.local/bin` to `PATH`; or add a privileged apt
+  provisioning phase at sandbox setup so `apt:` tools install.
 
 | Field | Content |
 | --- | --- |
-| **Disposition** | Fix is **external** (robotsix-mill harness `sandbox.py` / `_build_extra_packages_prefix` + sandbox-image privileges for apt); this skeleton repo has no in-repo lever over the harness `PATH` construction. Gap remains open and is tracked externally. |
-| **Interim-workaround** | For `pip:`-installed tools, make the `test_command` self-contained by prepending the user bin dir, e.g. `PATH="$HOME/.local/bin:$PATH" yamllint --strict . && PATH="$HOME/.local/bin:$PATH" vcs validate --input repos.yaml` (or invoke via `python3 -m <module>` where the tool supports it). This does **not** help `apt:`-only tools such as `shellcheck`, which stay blocked until the external fix lands. |
+| **Disposition** | Fix is **external** (robotsix-mill harness — the noexec `$HOME` mount flag and/or non-root privileges); this skeleton repo has no in-repo lever over the harness sandbox mount/privilege setup. Gap remains open and is tracked externally. |
+| **Interim-workaround** | The `PATH="$HOME/.local/bin:$PATH"` prepend does **not** work under noexec `$HOME` (the script still fails rc 126 Permission denied). The only working interim form is `python3 -m <module>`, exactly as the repo's current `.robotsix-mill/config.yaml` `test_command` does: `python3 -m yamllint --strict .` and `python3 -m vcs2l.commands.vcs validate --input repos.yaml`. `apt:`-only tools such as `shellcheck` have no runnable in-sandbox path and stay CI-only until the external fix lands. |
 
 ## Filing outcome
 
@@ -132,7 +135,7 @@ blocked by gap #2 — therefore `report_issue` was used.
 | 1 | `20260610T001407Z-provision-vcs2l-in-the-execution-sandbox-2cb7` | Provision `vcs2l` in the execution sandbox for workspace-targeted tickets | `missing-tool` |
 | 2 | `20260610T001411Z-provide-board-config-access-for-in-works-22b5` | Provide board/config access for in-workspace tickets to read sibling epic children | `missing-input` |
 | 3 | `20260610T001415Z-introduce-a-first-class-cross-repo-targe-596b` | Introduce a first-class cross-repo target concept and provision `gh`/`curl` | `workflow-improvement` |
-| 4 | `20260610T094408Z-test-gate-sandbox-pip-user-bin-dir-tmp-l-a08c` | Prepend the pip `--user` bin dir (`$HOME/.local/bin`) to sandbox `PATH` before running `test_command` | `workflow-improvement` |
+| 4 | `20260610T094408Z-test-gate-sandbox-pip-user-bin-dir-tmp-l-a08c` | Implement sandbox: noexec `$HOME` + non-root block `test_command` tools (only `python3 -m` works) | `workflow-improvement` |
 
 Gap 4 is already represented on the board by the present ticket; **no
 new board ticket was filed** for it. The id recorded above is a
