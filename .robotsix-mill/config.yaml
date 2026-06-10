@@ -1,2 +1,11 @@
-# robotsix-mill repository configuration
+# robotsix-mill repository configuration for the ROS2 workspace skeleton
 languages: [shell]
+# Mirror the three CI jobs (.github/workflows/ci.yaml) so the implement
+# test-gate validates exactly what CI does.
+test_command: >-
+  yamllint --strict . &&
+  shellcheck scripts/update_workspace.sh &&
+  vcs validate --input repos.yaml
+# Tools the test_command needs inside the sandbox (pip for yamllint /
+# vcs2l, apt for shellcheck), mirroring how CI installs them.
+extra_sandbox_packages: ["pip:yamllint", "pip:vcs2l", "apt:shellcheck"]
