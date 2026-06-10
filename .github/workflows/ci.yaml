@@ -39,3 +39,13 @@ jobs:
         run: pip install vcs2l
       - name: Validate repos manifest
         run: vcs validate --input repos.yaml
+
+  actionlint:
+    name: Actionlint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - name: Run actionlint
+        uses: docker://rhysd/actionlint:1.7.12
+        with:
+          args: -color
