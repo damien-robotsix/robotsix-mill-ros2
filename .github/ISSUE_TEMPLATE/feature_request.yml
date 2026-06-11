@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest an improvement to this repository's tooling
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        This repository is a thin ROS2 workspace skeleton (tooling
+        only). Contributions target the repository's own tooling
+        (`scripts/update_workspace.sh`, `repos.yaml`, CI, pre-commit,
+        docs) — not the external ROS2 sources.
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem statement
+      description: The problem or motivation behind this request.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-change
+    attributes:
+      label: Proposed change
+      description: Describe the change you would like to see.
+    validations:
+      required: true
+  - type: checkboxes
+    id: tooling-files-affected
+    attributes:
+      label: Tooling file(s) affected
+      description: Select all that apply.
+      options:
+        - label: scripts/update_workspace.sh
+        - label: repos.yaml
+        - label: CI
+        - label: pre-commit
+        - label: docs
+        - label: other

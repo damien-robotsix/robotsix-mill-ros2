@@ -1,0 +1,66 @@
+name: Bug report
+description: Report a problem with this repository's tooling
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        This repository is a thin ROS2 workspace skeleton (tooling
+        only): the workspace sources are not committed here but
+        declared in `repos.yaml` and cloned on demand. Please report
+        problems with the repository's own tooling
+        (`scripts/update_workspace.sh`, `repos.yaml`, CI, pre-commit,
+        docs) — not the external ROS2 sources.
+
+
+        Do NOT file security vulnerabilities here. Report them
+        privately via GitHub's "Report a vulnerability" feature under
+        the Security tab (see `SECURITY.md`).
+  - type: textarea
+    id: what-went-wrong
+    attributes:
+      label: What went wrong
+      description: A clear description of the problem.
+    validations:
+      required: true
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      description: Which part of the tooling is affected?
+      options:
+        - scripts/update_workspace.sh
+        - repos.yaml
+        - CI
+        - pre-commit
+        - docs
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: >-
+        Your OS + shell, `vcs --version` (vcs2l version), and
+        Python/pip version.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Reproduction steps
+      description: >-
+        The exact commands you ran (e.g.
+        `./scripts/update_workspace.sh`).
+    validations:
+      required: true
+  - type: textarea
+    id: command-output
+    attributes:
+      label: Command output / logs
+      description: Relevant command output or logs, if any.
+      render: shell
+    validations:
+      required: false
