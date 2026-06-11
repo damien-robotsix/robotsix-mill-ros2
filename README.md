@@ -5,6 +5,10 @@ committed to this repository — instead they are declared in a
 [`vcs2l`](https://github.com/ros-infrastructure/vcs2l) manifest and cloned
 into `src/` on demand.
 
+For the design rationale behind this skeleton — why `vcs2l` over
+submodules/worktrees/a monorepo, and how to organize and extend the
+workspace — see [`ARCHITECTURE.md`](ARCHITECTURE.md).
+
 ## Layout
 
 ```
