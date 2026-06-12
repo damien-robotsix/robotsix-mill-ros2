@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'echo "update_workspace.sh: error on line ${LINENO} (exit $?): ${BASH_COMMAND}" >&2' ERR
 
 # Resolve the repository root from this script's own location so the
 # script works regardless of the caller's current working directory.
