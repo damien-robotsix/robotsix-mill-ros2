@@ -1,0 +1,10 @@
+# Auto-detect text files and normalize them to LF in the repository.
+* text=auto eol=lf
+
+# Shell scripts MUST stay LF — CRLF breaks `#!/usr/bin/env bash`.
+*.sh    text eol=lf
+
+# Keep config/docs consistent with the existing pre-commit whitespace hooks.
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.md    text eol=lf
