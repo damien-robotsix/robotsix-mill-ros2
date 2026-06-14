@@ -19,3 +19,8 @@ repos:
     hooks:
       - id: yamllint
         args: [--strict]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.2
+    hooks:
+      - id: codespell
+        args: ["--ignore-words=.codespell-ignore"]
