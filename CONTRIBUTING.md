@@ -38,7 +38,7 @@ See [`README.md`](README.md) for the full workspace-population workflow
 
 ## Testing / validating changes locally
 
-CI runs three jobs (see [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)).
+CI runs five jobs (see [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)).
 You can reproduce them locally before pushing:
 
 ```sh
@@ -46,6 +46,7 @@ pre-commit run --all-files                 # runs the hooks below
 shellcheck scripts/update_workspace.sh     # shell-script linting (also a pre-commit hook)
 yamllint --strict .                        # YAML linting (honors .yamllint)
 vcs validate --input repos.yaml            # validates the workspace manifest
+codespell --ignore-words=.codespell-ignore # spell-check source files (also a pre-commit hook)
 ```
 
 The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
@@ -53,8 +54,8 @@ The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
 ## Code style
 
 - **Shell**: scripts must pass ShellCheck (the
-  [`.pre-commit-config.yaml`](.pre-commit-config.yaml) pins
-  shellcheck-precommit `v0.11.0`). Follow the style already used in
+  [`.pre-commit-config.yaml`](.pre-commit-config.yaml) file for the
+  pinned shellcheck-precommit version). Follow the style already used in
   `scripts/update_workspace.sh`.
 - **YAML**: files must pass `yamllint --strict` under the repo's
   `.yamllint` config. Per project convention, YAML files do NOT use
