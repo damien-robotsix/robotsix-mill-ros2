@@ -1,5 +1,7 @@
 # robotsix-mill-ros2
 
+[![CI](https://github.com/damien-robotsix/robotsix-mill/actions/workflows/ci.yaml/badge.svg)](https://github.com/damien-robotsix/robotsix-mill/actions/workflows/ci.yaml)
+
 A minimal ROS2 workspace skeleton. The workspace sources are not
 committed to this repository — instead they are declared in a
 [`vcs2l`](https://github.com/ros-infrastructure/vcs2l) manifest and cloned
