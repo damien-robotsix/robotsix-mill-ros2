@@ -12,6 +12,7 @@ Closes #
   - [ ] `shellcheck scripts/update_workspace.sh`
   - [ ] `yamllint --strict .`
   - [ ] `vcs validate --input repos.yaml`
+  - [ ] `codespell --ignore-words=.codespell-ignore`
 - [ ] Clear, descriptive commit messages.
 
 > Note: DCO `Signed-off-by` sign-off is **not** required for this
