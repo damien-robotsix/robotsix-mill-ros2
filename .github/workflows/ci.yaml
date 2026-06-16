@@ -9,6 +9,10 @@ name: CI
 
 permissions: read-all
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   yamllint:
     name: YAML Lint
