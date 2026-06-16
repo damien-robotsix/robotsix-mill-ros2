@@ -13,6 +13,7 @@ Closes #
   - [ ] `yamllint --strict .`
   - [ ] `vcs validate --input repos.yaml`
   - [ ] `codespell --ignore-words=.codespell-ignore`
+  - [ ] `actionlint` — validate GitHub Actions workflows
 - [ ] Clear, descriptive commit messages.
 
 > Note: DCO `Signed-off-by` sign-off is **not** required for this
