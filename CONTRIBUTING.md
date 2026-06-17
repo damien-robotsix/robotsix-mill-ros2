@@ -47,6 +47,7 @@ shellcheck scripts/update_workspace.sh     # shell-script linting (also a pre-co
 yamllint --strict .                        # YAML linting (honors .yamllint)
 vcs validate --input repos.yaml            # validates the workspace manifest
 codespell --ignore-words=.codespell-ignore # spell-check source files (also a pre-commit hook)
+actionlint -color                          # validate GitHub Actions workflows
 ```
 
 The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
