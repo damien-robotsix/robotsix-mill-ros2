@@ -57,8 +57,8 @@ updates for any already-cloned repos, so it is safe to re-run.
 
 This repository uses [pre-commit](https://pre-commit.com/) to catch
 simple issues (YAML syntax errors, trailing whitespace, shell script
-mistakes, accidentally-committed large files) before a commit is
-created.  To install the hooks:
+mistakes, invalid GitHub Actions workflow syntax, accidentally-committed
+large files, and common spelling errors) before a commit is created.  To install the hooks:
 
 ```sh
 pip install pre-commit
