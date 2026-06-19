@@ -70,7 +70,9 @@ The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
 1. Branch off `main`.
 2. Keep each PR focused on a single, self-contained change.
 3. Write clear, descriptive commit messages.
-4. Ensure CI (the CI jobs listed above) and `pre-commit run --all-files`
+4. For user-facing changes, add a short entry under the appropriate
+   section of `[Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md).
+5. Ensure CI (the CI jobs listed above) and `pre-commit run --all-files`
    pass before requesting review.
 
 Sign-off (DCO `Signed-off-by`) is **not** required for this repository.
