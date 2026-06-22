@@ -14,35 +14,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  yamllint:
-    name: YAML Lint
+  lint:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: YAML Lint
+            pip: yamllint
+            run: yamllint --strict .
+          - name: ShellCheck
+            apt: shellcheck
+            run: shellcheck scripts/update_workspace.sh
+          - name: VCS Validate
+            pip: vcs2l
+            run: vcs validate --input repos.yaml
+          - name: Codespell
+            pip: codespell
+            run: codespell --ignore-words=.codespell-ignore
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
-      - name: Install yamllint
-        run: pip install yamllint
-      - name: Lint YAML files
-        run: yamllint --strict .
-
-  shellcheck:
-    name: ShellCheck
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
-      - name: Install shellcheck
-        run: sudo apt-get update && sudo apt-get install -y shellcheck
-      - name: Lint shell scripts
-        run: shellcheck scripts/update_workspace.sh
-
-  vcs-validate:
-    name: VCS Validate
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
-      - name: Install vcs2l
-        run: pip install vcs2l
-      - name: Validate repos manifest
-        run: vcs validate --input repos.yaml
+      - name: Install pip tool
+        if: ${{ matrix.pip }}
+        run: pip install ${{ matrix.pip }}
+      - name: Install apt tool
+        if: ${{ matrix.apt }}
+        run: sudo apt-get update && sudo apt-get install -y ${{ matrix.apt }}
+      - name: Run linter
+        run: ${{ matrix.run }}
 
   actionlint:
     name: Actionlint
@@ -53,13 +53,3 @@ jobs:
         uses: rhysd/actionlint@914e7df21a07ef503a81201c76d2b11c789d3fca  # v1.7.12
         with:
           args: -color
-
-  codespell:
-    name: Codespell
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
-      - name: Install codespell
-        run: pip install codespell
-      - name: Spell-check
-        run: codespell --ignore-words=.codespell-ignore
