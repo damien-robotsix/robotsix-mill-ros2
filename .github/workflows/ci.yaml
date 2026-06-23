@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   lint:
+    permissions: {}
     name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
     strategy:
@@ -45,6 +46,7 @@ jobs:
         run: ${{ matrix.run }}
 
   actionlint:
+    permissions: {}
     name: Actionlint
     runs-on: ubuntu-24.04
     steps:
