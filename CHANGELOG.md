@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `AGENT.md`: AI-agent orientation file describing repo layout, conventions, and commands.
+- `AGENT.md`: Documented Dependabot groups-and-cooldown convention for all package ecosystems.
 ### Changed
 ### Fixed
 ### Removed
