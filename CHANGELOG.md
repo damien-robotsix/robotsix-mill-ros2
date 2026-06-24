@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `AGENT.md`: AI-agent orientation file describing repo layout, conventions, and commands.
 ### Changed
 ### Fixed
 ### Removed
