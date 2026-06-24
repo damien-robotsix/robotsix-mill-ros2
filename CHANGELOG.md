@@ -21,5 +21,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   pre-commit mirror hooks, community docs (README, CONTRIBUTING, SECURITY, ARCHITECTURE),
   and contributor templates (issue forms, PR template).
 
-[Unreleased]: https://github.com/damien-robotsix/robotsix-mill/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/damien-robotsix/robotsix-mill/releases/tag/v0.1.0
+[Unreleased]: https://github.com/damien-robotsix/robotsix-mill-ros2/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/damien-robotsix/robotsix-mill-ros2/releases/tag/v0.1.0
