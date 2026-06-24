@@ -5,9 +5,21 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    open-pull-requests-limit: 3
+    groups:
+      actions:
+        patterns: ["*"]
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "pre-commit"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
+    open-pull-requests-limit: 3
+    groups:
+      pre-commit-hooks:
+        patterns: ["*"]
+    cooldown:
+      default-days: 7
