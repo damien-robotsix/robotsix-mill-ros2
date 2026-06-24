@@ -74,6 +74,15 @@ The robotsix-mill test gate (`.robotsix-mill/config.yaml`) mirrors
 this: it runs `yamllint --strict . && vcs validate --input repos.yaml`
 inside the sandbox.
 
+## Dependabot configuration
+
+- **All Dependabot package-ecosystem entries** must include a `groups`
+  block with a catch-all pattern (`patterns: ["*"]`) and a
+  `cooldown.default-days: 7` to collapse multiple updates into a single
+  weekly PR with a safety cooldown. New ecosystems (pip, npm, Docker,
+  etc.) should follow the same pattern as the existing `github-actions`
+  and `pre-commit` entries.
+
 ## Conventions for AI agents
 
 - **No source edits in this repo.** This repo only contains the
