@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `CODE_OF_CONDUCT.md`: Contributor Covenant v3.0 code of conduct with reporting instructions.
 - `AGENT.md`: AI-agent orientation file describing repo layout, conventions, and commands.
 - `AGENT.md`: Documented Dependabot groups-and-cooldown convention for all package ecosystems.
 ### Changed
