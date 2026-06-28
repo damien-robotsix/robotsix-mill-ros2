@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AGENT.md`: AI-agent orientation file describing repo layout, conventions, and commands.
 - `AGENT.md`: Documented Dependabot groups-and-cooldown convention for all package ecosystems.
 ### Changed
+- `README.md`: Added License badge (MIT) linking to the OSI license page.
 ### Fixed
 ### Removed
 
