@@ -1,6 +1,7 @@
 # robotsix-mill-ros2
 
 [![CI](https://github.com/damien-robotsix/robotsix-mill-ros2/actions/workflows/ci.yaml/badge.svg)](https://github.com/damien-robotsix/robotsix-mill-ros2/actions/workflows/ci.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A minimal ROS2 workspace skeleton. The workspace sources are not
 committed to this repository — instead they are declared in a
