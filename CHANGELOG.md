@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CODE_OF_CONDUCT.md`: Contributor Covenant v3.0 code of conduct with reporting instructions.
 - `AGENT.md`: AI-agent orientation file describing repo layout, conventions, and commands.
 - `AGENT.md`: Documented Dependabot groups-and-cooldown convention for all package ecosystems.
+- `.github/workflows/ci.yaml`: Added `zizmor` security audit job for GitHub Actions workflows.
+- `.pre-commit-config.yaml`: Added `zizmorcore/zizmor-pre-commit` hook for local security scanning.
 ### Changed
 - `README.md`: Added License badge (MIT) linking to the OSI license page.
 ### Fixed

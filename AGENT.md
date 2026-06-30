@@ -12,7 +12,7 @@ downstream repositories to clone and from where.
 ├── scripts/update_workspace.sh   # runs `vcs import` + `vcs pull` from repos.yaml
 ├── src/                          # ephemeral checkout (git-ignored)
 ├── .robotsix-mill/config.yaml    # robotsix-mill test gate (yamllint + vcs validate)
-├── .github/workflows/ci.yaml     # CI: yamllint, shellcheck, vcs validate, actionlint, codespell
+├── .github/workflows/ci.yaml     # CI: yamllint, shellcheck, vcs validate, actionlint, zizmor, codespell
 ├── .robotsix-mill/periodic/      # audit.yaml, health.yaml, survey.yaml (built-in stubs)
 ├── .pre-commit-config.yaml       # pre-commit hooks
 ├── ARCHITECTURE.md               # design rationale

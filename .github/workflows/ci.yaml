@@ -41,6 +41,8 @@ jobs:
             actionlint: true
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
       - name: Install just
         run: sudo apt-get update && sudo apt-get install -y just
       - name: Install pip tool
@@ -57,6 +59,20 @@ jobs:
       - name: Run linter
         run: just ${{ matrix.recipe }}
 
+  zizmor:
+    permissions: {}
+    name: Zizmor
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d  # v0.5.6
+        with:
+          advanced-security: "false"
+          annotations: "true"
+
   pre-commit:
     permissions: {}
     name: Pre-commit
@@ -64,6 +80,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38  # v5.4.0
         with:
           python-version: "3.x"
