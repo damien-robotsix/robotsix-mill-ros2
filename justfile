@@ -13,4 +13,7 @@ validate-manifest:
 lint-actions:
     actionlint -color
 
-check: lint-yaml lint-shell lint-spelling validate-manifest lint-actions
+lint-security:
+    zizmor --quiet .
+
+check: lint-yaml lint-shell lint-spelling validate-manifest lint-actions lint-security

@@ -139,7 +139,10 @@ downstream package builds. The lint commands are defined in the
 [`justfile`](justfile) as individual recipes (`lint-yaml`, `lint-shell`,
 `lint-spelling`, `validate-manifest`, `lint-actions`) and can be run
 all together with `just check`. The CI matrix invokes each recipe via
-`just ${{ matrix.recipe }}`.
+`just ${{ matrix.recipe }}`. A separate `zizmor` job provides security
+auditing of GitHub Actions workflows (complementing actionlint with
+23+ security-specific rules), and a `pre-commit` job enforces hooks
+not covered by the lint matrix.
 
 The key division of responsibility: this CI confirms the *manifest
 and tooling* are correct, while each downstream repository owns the
