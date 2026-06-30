@@ -135,15 +135,11 @@ conceptually rather than where they happen to be hosted.
 The skeleton's CI ([`.github/workflows/ci.yaml`](.github/workflows/ci.yaml),
 running on `ubuntu-24.04` for pushes and pull requests to `main` with
 `permissions: read-all`) validates the *skeleton itself*, not the
-downstream package builds. It runs five jobs:
-
-- `yamllint --strict .` — lint all YAML, including the manifest.
-- `shellcheck scripts/update_workspace.sh` — lint the update script.
-- `vcs validate --input repos.yaml` — validate that the manifest is
-  well-formed.
-- `actionlint` — lint the GitHub Actions workflows.
-- `codespell --ignore-words=.codespell-ignore` — spell-check source
-  files.
+downstream package builds. The lint commands are defined in the
+[`justfile`](justfile) as individual recipes (`lint-yaml`, `lint-shell`,
+`lint-spelling`, `validate-manifest`, `lint-actions`) and can be run
+all together with `just check`. The CI matrix invokes each recipe via
+`just ${{ matrix.recipe }}`.
 
 The key division of responsibility: this CI confirms the *manifest
 and tooling* are correct, while each downstream repository owns the
