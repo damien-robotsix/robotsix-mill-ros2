@@ -62,12 +62,8 @@ re-running the update script. Build outputs (`build/`, `install/`,
 # Pre-commit (runs yamllint, shellcheck, end-of-file-fixer, trailing-whitespace, codespell)
 pre-commit run --all-files
 
-# Individual CI checks
-yamllint --strict .
-shellcheck scripts/update_workspace.sh
-vcs validate --input repos.yaml
-codespell --ignore-words=.codespell-ignore
-actionlint -color
+# Run all lint/validate commands
+just check
 ```
 
 The robotsix-mill test gate (`.robotsix-mill/config.yaml`) mirrors

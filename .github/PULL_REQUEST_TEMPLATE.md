@@ -8,12 +8,7 @@ Closes #
 
 - [ ] Branched off `main`; single, self-contained change.
 - [ ] `pre-commit run --all-files` passes.
-- [ ] CI lint commands pass locally:
-  - [ ] `shellcheck scripts/update_workspace.sh`
-  - [ ] `yamllint --strict .`
-  - [ ] `vcs validate --input repos.yaml`
-  - [ ] `codespell --ignore-words=.codespell-ignore`
-  - [ ] `actionlint` — validate GitHub Actions workflows
+- [ ] `just check` passes locally.
 - [ ] Clear, descriptive commit messages.
 
 > Note: DCO `Signed-off-by` sign-off is **not** required for this

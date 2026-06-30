@@ -38,16 +38,13 @@ See [`README.md`](README.md) for the full workspace-population workflow
 
 ## Testing / validating changes locally
 
-CI runs five jobs (see [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)).
+CI runs the individual lint/validate commands defined in the
+[`justfile`](justfile) (see [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)).
 You can reproduce them locally before pushing:
 
 ```sh
-pre-commit run --all-files                 # runs the hooks below
-shellcheck scripts/update_workspace.sh     # shell-script linting (also a pre-commit hook)
-yamllint --strict .                        # YAML linting (honors .yamllint)
-vcs validate --input repos.yaml            # validates the workspace manifest
-codespell --ignore-words=.codespell-ignore # spell-check source files (also a pre-commit hook)
-actionlint -color                          # validate GitHub Actions workflows
+pre-commit run --all-files                 # runs the hooks
+just check                                 # runs all lint/validate commands
 ```
 
 The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
