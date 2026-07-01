@@ -1,5 +1,6 @@
 ## 0.0.0 (unreleased)
 
+- Enable the built-in `security_posture` periodic workflow to inspect CI and pre-commit config against OWASP/OpenSSF/SLSA best practices.
 - Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - Add `[group: '…']` attributes to justfile recipes for grouped `just --list` output; move `check` to top as default recipe
 # Changelog
