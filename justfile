@@ -1,3 +1,5 @@
+check: lint-yaml lint-shell lint-spelling validate-manifest lint-actions lint-security
+
 lint-yaml:
     yamllint --strict .
 
@@ -15,5 +17,3 @@ lint-actions:
 
 lint-security:
     zizmor --quiet .
-
-check: lint-yaml lint-shell lint-spelling validate-manifest lint-actions lint-security
