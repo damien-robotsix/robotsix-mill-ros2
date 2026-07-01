@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add `[group: '…']` attributes to justfile recipes for grouped `just --list` output; move `check` to top as default recipe
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
