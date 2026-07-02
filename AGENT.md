@@ -1,5 +1,7 @@
 # AGENT.md — robotsix-mill-ros2
 
+This repo follows the [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards).
+
 A ROS2 workspace skeleton repository. It carries **no Python or ROS2
 source code** — it is a workspace orchestrator that declares which
 downstream repositories to clone and from where.
