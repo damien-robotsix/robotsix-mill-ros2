@@ -1,11 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Enforce DCO (Developer Certificate of Origin) via `.github/workflows/dco.yml` and `.github/dco.yml`
-  - Require `Signed-off-by` trailers on all commits per ROS 2 DCO standard
-  - Updated `CONTRIBUTING.md` and `.github/PULL_REQUEST_TEMPLATE.md` to reflect DCO requirements
-- Enable the built-in `security_posture` periodic workflow to inspect CI and pre-commit config against OWASP/OpenSSF/SLSA best practices.
-- Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
-- Add `[group: '…']` attributes to justfile recipes for grouped `just --list` output; move `check` to top as default recipe
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -16,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Enforce DCO (Developer Certificate of Origin) via `.github/workflows/dco.yml` and `.github/dco.yml`
+  - Require `Signed-off-by` trailers on all commits per ROS 2 DCO standard
+  - Updated `CONTRIBUTING.md` and `.github/PULL_REQUEST_TEMPLATE.md` to reflect DCO requirements
+- Enable the built-in `security_posture` periodic workflow to inspect CI and pre-commit config against OWASP/OpenSSF/SLSA best practices.
 - `justfile`: Centralized lint/validate commands as `just` recipes (`lint-yaml`, `lint-shell`, `lint-spelling`, `validate-manifest`, `lint-actions`, `check`).
 - `.github/workflows/ci.yaml`: Added `workflow_dispatch:` trigger to enable manual CI runs from the Actions UI.
 - `CODE_OF_CONDUCT.md`: Contributor Covenant v3.0 code of conduct with reporting instructions.
@@ -24,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.github/workflows/ci.yaml`: Added `zizmor` security audit job for GitHub Actions workflows.
 - `.pre-commit-config.yaml`: Added `zizmorcore/zizmor-pre-commit` hook for local security scanning.
 ### Changed
+- Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - `README.md`: Added License badge (MIT) linking to the OSI license page.
 ### Fixed
 ### Removed
