@@ -86,7 +86,7 @@ git rebase --signoff HEAD~N   # where N is the number of commits to fix
 ```
 
 CI enforces this check on every pull request via `.github/workflows/dco.yml`.
-Trivial changes (typo fixes, docs, chore) and Dependabot commits are exempted.
+Trivial changes (typo fixes, docs, chore) and Dependabot and robotsix-mill bot commits are exempted.
 
 ## License & copyright
 

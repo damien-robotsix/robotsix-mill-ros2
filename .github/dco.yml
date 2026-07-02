@@ -1,3 +1,4 @@
 exempt-authors:
   - "dependabot[bot]"
+  - "robotsix-mill[bot]"
 trivial-pattern: "^(ci|docs|chore|typo|fixup!|squash!):"
