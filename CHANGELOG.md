@@ -1,5 +1,8 @@
 ## 0.0.0 (unreleased)
 
+- Enforce DCO (Developer Certificate of Origin) via `.github/workflows/dco.yml` and `.github/dco.yml`
+  - Require `Signed-off-by` trailers on all commits per ROS 2 DCO standard
+  - Updated `CONTRIBUTING.md` and `.github/PULL_REQUEST_TEMPLATE.md` to reflect DCO requirements
 - Enable the built-in `security_posture` periodic workflow to inspect CI and pre-commit config against OWASP/OpenSSF/SLSA best practices.
 - Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - Add `[group: '…']` attributes to justfile recipes for grouped `just --list` output; move `check` to top as default recipe

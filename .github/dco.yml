@@ -1,0 +1,3 @@
+exempt-authors:
+  - "dependabot[bot]"
+trivial-pattern: "^(ci|docs|chore|typo|fixup!|squash!):"
