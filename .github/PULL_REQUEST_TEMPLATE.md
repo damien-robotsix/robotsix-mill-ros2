@@ -11,5 +11,4 @@ Closes #
 - [ ] `just check` passes locally.
 - [ ] Clear, descriptive commit messages.
 
-> Note: DCO `Signed-off-by` sign-off is **not** required for this
-> repository.
+- [ ] All commits include a `Signed-off-by` trailer (`git commit -s`)

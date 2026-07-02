@@ -72,7 +72,21 @@ The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
 5. Ensure CI (the CI jobs listed above) and `pre-commit run --all-files`
    pass before requesting review.
 
-Sign-off (DCO `Signed-off-by`) is **not** required for this repository.
+## Developer Certificate of Origin (DCO)
+
+This repository requires all commits to include a `Signed-off-by` trailer
+as per the ROS 2 Developer Certificate of Origin (DCO) standard
+([ros2.org](https://docs.ros.org/en/rolling/The-ROS2-Project/Contributing/Developer-Guide.html#developer-certificate-of-origin)).
+
+To sign a commit, use `git commit -s` (or `git commit --signoff`).
+Existing unsigned commits on a branch can be fixed with:
+
+```sh
+git rebase --signoff HEAD~N   # where N is the number of commits to fix
+```
+
+CI enforces this check on every pull request via `.github/workflows/dco.yml`.
+Trivial changes (typo fixes, docs, chore) and Dependabot and robotsix-mill bot commits are exempted.
 
 ## License & copyright
 
