@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add link to [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards) in README.md and AGENT.md.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
