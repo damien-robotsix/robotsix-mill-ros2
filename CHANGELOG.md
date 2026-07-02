@@ -1,5 +1,6 @@
 ## 0.0.0 (unreleased)
 
+- Add Dependabot auto-merge caller workflow (`.github/workflows/dependabot-auto-merge.yml`).
 - Add link to [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards) in README.md and AGENT.md.
 # Changelog
 
