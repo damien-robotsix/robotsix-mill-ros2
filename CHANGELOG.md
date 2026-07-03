@@ -1,5 +1,6 @@
 ## 0.0.0 (unreleased)
 
+- Restructure AGENT.md to follow the new repo-baseline standard: add workspace tier to the opening paragraph and reformat repository conventions as Rule/Rationale sections.
 - Add `.devcontainer/` configuration (Dockerfile + devcontainer.json) for one-click ROS2 development environment setup with VS Code Dev Containers.
 - Add Dependabot auto-merge caller workflow (`.github/workflows/dependabot-auto-merge.yml`).
 - Add link to [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards) in README.md and AGENT.md.
