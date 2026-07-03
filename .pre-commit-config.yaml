@@ -31,3 +31,11 @@ repos:
     hooks:
       - id: codespell
         args: ["--ignore-words=.codespell-ignore"]
+  - repo: local
+    hooks:
+      - id: changelog-first-line
+        name: Changelog first line
+        entry: '^# Changelog$'
+        language: pygrep
+        files: ^CHANGELOG\.md$
+        args: ['--negate', '--multiline']
