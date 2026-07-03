@@ -1,9 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Restructure AGENT.md to follow the new repo-baseline standard: add workspace tier to the opening paragraph and reformat repository conventions as Rule/Rationale sections.
-- Add `.devcontainer/` configuration (Dockerfile + devcontainer.json) for one-click ROS2 development environment setup with VS Code Dev Containers.
-- Add Dependabot auto-merge caller workflow (`.github/workflows/dependabot-auto-merge.yml`).
-- Add link to [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards) in README.md and AGENT.md.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -14,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Restore CHANGELOG.md structure: move `# Changelog` to line 1, merge orphaned `## 0.0.0 (unreleased)` entries into `## [Unreleased]`, and add pygrep pre-commit hook to enforce first-line convention.
+- Restructure AGENT.md to follow the new repo-baseline standard: add workspace tier to the opening paragraph and reformat repository conventions as Rule/Rationale sections.
+- Add `.devcontainer/` configuration (Dockerfile + devcontainer.json) for one-click ROS2 development environment setup with VS Code Dev Containers.
+- Add Dependabot auto-merge caller workflow (`.github/workflows/dependabot-auto-merge.yml`).
+- Add link to [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards) in README.md and AGENT.md.
 - Enforce DCO (Developer Certificate of Origin) via `.github/workflows/dco.yml` and `.github/dco.yml`
   - Require `Signed-off-by` trailers on all commits per ROS 2 DCO standard
   - Updated `CONTRIBUTING.md` and `.github/PULL_REQUEST_TEMPLATE.md` to reflect DCO requirements
