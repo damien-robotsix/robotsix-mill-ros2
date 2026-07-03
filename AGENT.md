@@ -2,9 +2,9 @@
 
 This repo follows the [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards).
 
-A ROS2 workspace skeleton repository. It carries **no Python or ROS2
-source code** — it is a workspace orchestrator that declares which
-downstream repositories to clone and from where.
+A ROS2 workspace skeleton repository (workspace tier). It carries
+**no Python or ROS2 source code** — it is a workspace orchestrator
+that declares which downstream repositories to clone and from where.
 
 ## Layout
 
@@ -72,32 +72,54 @@ The robotsix-mill test gate (`.robotsix-mill/config.yaml`) mirrors
 this: it runs `yamllint --strict . && vcs validate --input repos.yaml`
 inside the sandbox.
 
-## Dependabot configuration
+## Rule: Dependabot entries must include a groups block
+**Rationale:** Collapses multiple updates into a single weekly PR with
+a safety cooldown, reducing churn and review overhead.
 
-- **All Dependabot package-ecosystem entries** must include a `groups`
+- All Dependabot `package-ecosystem` entries must include a `groups`
   block with a catch-all pattern (`patterns: ["*"]`) and a
-  `cooldown.default-days: 7` to collapse multiple updates into a single
-  weekly PR with a safety cooldown. New ecosystems (pip, npm, Docker,
-  etc.) should follow the same pattern as the existing `github-actions`
-  and `pre-commit` entries.
+  `cooldown.default-days: 7`. New ecosystems (pip, npm, Docker, etc.)
+  should follow the same pattern as the existing `github-actions` and
+  `pre-commit` entries.
 
-## Conventions for AI agents
+## Rule: No source edits in this repo
+**Rationale:** This repo is a workspace orchestrator; downstream
+packages live in their own repositories declared in `repos.yaml`.
 
-- **No source edits in this repo.** This repo only contains the
-  manifest, scripts, CI, and docs. Do not add ROS2 packages, Python
-  modules, or C++ source here — those belong in downstream
-  repositories declared in `repos.yaml`.
-- **Add entries, not forks.** To include more ROS2 packages, append
-  entries under `repositories:` in `repos.yaml`. Do not fork the
-  skeleton unless you need a divergent workspace identity.
-- **YAML linting is strict.** All YAML files must pass
-  `yamllint --strict` with the repo's `.yamllint` config (no
-  `document-start` markers).
-- **Shell scripts must pass ShellCheck.** The update script and any
-  new shell scripts are linted via `shellcheck`.
-- **No network in CI/mill sandbox.** `vcs import` and `vcs pull`
-  require network access — they cannot run in CI or the robotsix-mill
-  sandbox. The test gate validates only the manifest syntax, not the
-  clone operation.
-- **Pre-commit must pass.** All commits must pass the hooks in
-  `.pre-commit-config.yaml`.
+Do not add ROS2 packages, Python modules, or C++ source here — those
+belong in downstream repositories.
+
+## Rule: Add entries, not forks
+**Rationale:** Keeps the workspace identity unified and avoids
+divergent skeletons that drift apart.
+
+To include more ROS2 packages, append entries under `repositories:`
+in `repos.yaml`. Do not fork the skeleton unless you need a divergent
+workspace identity.
+
+## Rule: YAML linting is strict
+**Rationale:** The CI and robotsix-mill test gate enforce
+`yamllint --strict`; non-conforming YAML breaks the pipeline.
+
+All YAML files must pass `yamllint --strict` with the repo's
+`.yamllint` config (no `document-start` markers).
+
+## Rule: Shell scripts must pass ShellCheck
+**Rationale:** Pre-commit and CI both run `shellcheck`; violations
+block merge.
+
+The update script and any new shell scripts are linted via
+`shellcheck`.
+
+## Rule: No network in CI/mill sandbox
+**Rationale:** `vcs import` and `vcs pull` require network access
+which is unavailable in sandboxed CI and robotsix-mill environments.
+
+The test gate validates only the manifest syntax, not the clone
+operation. Do not rely on network-dependent steps in CI.
+
+## Rule: Pre-commit must pass
+**Rationale:** All commits must pass the hooks in
+`.pre-commit-config.yaml`; failing hooks block CI.
+
+Run `pre-commit run --all-files` before pushing.
