@@ -56,6 +56,21 @@ then run:
 This imports every repo listed in `repos.yaml` into `src/` and pulls
 updates for any already-cloned repos, so it is safe to re-run.
 
+## Development container
+
+This repository includes a [development container](https://containers.dev/) configuration
+under `.devcontainer/`. To use it:
+
+1. Install [Docker](https://docs.docker.com/engine/install/) and the
+   [Dev Containers extension](vscode:extension/ms-vscode-remote.remote-containers) for VS Code.
+2. Open the repository folder in VS Code.
+3. When prompted "Reopen in Container", click **Reopen** (or run the
+   `Dev Containers: Reopen in Container` command).
+
+The container is configured with ROS 2 Rolling by default. To use a different
+ROS 2 distribution, update `ROS_DISTRO` in `.devcontainer/devcontainer.json` before
+building (the image must be rebuilt for the change to take effect).
+
 ## Pre-commit hooks
 
 This repository uses [pre-commit](https://pre-commit.com/) to catch
