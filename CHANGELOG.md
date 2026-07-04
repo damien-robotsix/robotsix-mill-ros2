@@ -1,5 +1,6 @@
 ## 0.0.0 (unreleased)
 
+- Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
 - Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
 # Changelog
 
