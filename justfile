@@ -24,3 +24,15 @@ lint-actions:
 # Run zizmor security analysis on CI workflows
 lint-security:
     zizmor --quiet .
+
+# Populate src/ from repos.yaml (requires network and vcs)
+update:
+    ./scripts/update_workspace.sh
+
+# Remove colcon build artifacts (build, install, log)
+clean:
+    rm -rf build install log
+
+# Build the workspace with colcon (requires populated src/ and colcon)
+build args="":
+    colcon build {{args}}

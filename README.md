@@ -53,6 +53,8 @@ then run:
 ./scripts/update_workspace.sh
 ```
 
+(`just update` is a shorthand for the same command.)
+
 This imports every repo listed in `repos.yaml` into `src/` and pulls
 updates for any already-cloned repos, so it is safe to re-run.
 

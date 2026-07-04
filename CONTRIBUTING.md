@@ -49,6 +49,26 @@ just check                                 # runs all lint/validate commands
 
 The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
 
+## Workspace management
+
+After updating `repos.yaml`, populate `src/` with:
+
+```sh
+just update
+```
+
+To remove build artifacts:
+
+```sh
+just clean
+```
+
+To build all packages in the workspace (requires a ROS2 environment):
+
+```sh
+just build
+```
+
 ## Code style
 
 - **Shell**: scripts must pass ShellCheck (the
