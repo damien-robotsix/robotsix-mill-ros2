@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.

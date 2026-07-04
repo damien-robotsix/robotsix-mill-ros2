@@ -155,8 +155,8 @@ The same checks are mirrored for the robotsix-mill tooling in
 declares `languages: [shell]`, a `test_command` running
 `yamllint --strict . && python3 -m vcs2l.commands.vcs validate --input
 repos.yaml`, and `extra_sandbox_packages: [pip:yamllint, pip:vcs2l]`.
-The `.robotsix-mill/periodic/` directory holds three built-in workflow
-stubs — `audit.yaml`, `health.yaml`, and `survey.yaml`.
+The `.robotsix-mill/periodic/` directory holds four built-in workflow
+stubs — `audit.yaml`, `health.yaml`, `security_posture.yaml`, and `survey.yaml`.
 
 Release coordination follows from the floating manifest: downstream
 repositories cut their own releases on their own branches, and the
