@@ -80,6 +80,7 @@ jobs:
         with:
           advanced-security: "false"
           annotations: "true"
+          config: .zizmor.yml
 
   pre-commit:
     permissions: {}
