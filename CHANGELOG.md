@@ -1,6 +1,5 @@
 ## 0.0.0 (unreleased)
 
-- Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
 - Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
 # Changelog
 
@@ -32,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - `README.md`: Added License badge (MIT) linking to the OSI license page.
 ### Fixed
+- Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
 ### Removed
 
 ## [0.1.0] — YYYY-MM-DD
