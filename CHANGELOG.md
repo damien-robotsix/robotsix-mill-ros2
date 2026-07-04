@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.

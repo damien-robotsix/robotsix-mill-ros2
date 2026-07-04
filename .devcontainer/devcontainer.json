@@ -25,7 +25,6 @@
     },
     "runArgs": [
         "--net=host",
-        "--pid=host",
         "--ipc=host"
     ],
     "postCreateCommand": "vcs import src < repos.yaml && rosdep update && rosdep install --from-paths src --ignore-src -y && sudo chown -R $(whoami) .",
