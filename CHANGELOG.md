@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
