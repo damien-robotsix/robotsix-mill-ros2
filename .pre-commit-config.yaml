@@ -35,7 +35,7 @@ repos:
     hooks:
       - id: changelog-first-line
         name: Changelog first line
-        entry: '^# Changelog$'
+        entry: '\A# Changelog$'
         language: pygrep
         files: ^CHANGELOG\.md$
         args: ['--negate', '--multiline']

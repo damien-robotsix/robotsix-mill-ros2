@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -12,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Restore CHANGELOG.md structure: move `# Changelog` to line 1, merge orphaned `## 0.0.0 (unreleased)` entries into `## [Unreleased]`, and add pygrep pre-commit hook to enforce first-line convention.
+- Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
 - Restructure AGENT.md to follow the new repo-baseline standard: add workspace tier to the opening paragraph and reformat repository conventions as Rule/Rationale sections.
 - Add `.devcontainer/` configuration (Dockerfile + devcontainer.json) for one-click ROS2 development environment setup with VS Code Dev Containers.
 - Add Dependabot auto-merge caller workflow (`.github/workflows/dependabot-auto-merge.yml`).
@@ -31,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - `README.md`: Added License badge (MIT) linking to the OSI license page.
 ### Fixed
+- Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
 ### Removed
 
 ## [0.1.0] — YYYY-MM-DD
