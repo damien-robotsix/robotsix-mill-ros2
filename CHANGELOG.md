@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -11,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
 - Restore CHANGELOG.md structure: move `# Changelog` to line 1, merge orphaned `## 0.0.0 (unreleased)` entries into `## [Unreleased]`, and add pygrep pre-commit hook to enforce first-line convention.
 - Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
 - Restructure AGENT.md to follow the new repo-baseline standard: add workspace tier to the opening paragraph and reformat repository conventions as Rule/Rationale sections.
