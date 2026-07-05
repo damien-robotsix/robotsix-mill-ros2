@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -9,6 +6,8 @@ The format is adapted from [Keep a Changelog](https://keepachangelog.com/en/1.1.
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+- Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
 
 ### Added
 - Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
