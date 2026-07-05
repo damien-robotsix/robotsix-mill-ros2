@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add `changelog_autofill` periodic workflow to `.robotsix-mill/periodic/`.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.

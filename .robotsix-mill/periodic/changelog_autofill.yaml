@@ -1,0 +1,2 @@
+# Enables the built-in changelog_autofill periodic workflow
+name: changelog_autofill
