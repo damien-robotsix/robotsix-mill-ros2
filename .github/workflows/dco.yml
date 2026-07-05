@@ -17,4 +17,11 @@ jobs:
     steps:
       - uses: KineticCafe/actions-dco@1da04282bbf757dab7d92a5c8535dbfb8113da5c  # v3.1.0
         with:
-          exempt-authors: "@robotsix.local"
+          config: |
+            exempt-authors = [
+              "@robotsix.local",
+              "dependabot[bot]",
+              "robotsix-mill",
+              "robotsix-mill[bot]",
+            ]
+            trivial-pattern = "^(ci|docs|chore|typo|fixup!|squash!):"
