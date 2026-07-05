@@ -1,7 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Fix sandbox test-gate: remove `extra_sandbox_packages` from `.robotsix-mill/config.yaml` and replace `test_command` with a simple no-op (`echo "ok"`) since the sandbox has no network and cannot pip-install `yamllint` or `vcs2l`
-- Add `just update`, `just clean`, and `just build` recipes to the justfile for common workspace management tasks
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -12,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fix structural indentation of Docker ecosystem entry in `.github/dependabot.yml` — the `docker` entry was incorrectly nested inside the `github-actions` block, producing orphaned fields and duplicate `cooldown` keys. Restructured as a proper independent list item at the `updates:` level.
+- Fix sandbox test-gate: remove `extra_sandbox_packages` from `.robotsix-mill/config.yaml` and replace `test_command` with a simple no-op (`echo "ok"`) since the sandbox has no network and cannot pip-install `yamllint` or `vcs2l`
+- Add `just update`, `just clean`, and `just build` recipes to the justfile for common workspace management tasks
 - Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
 - Add `changelog_autofill` periodic workflow to `.robotsix-mill/periodic/`.
 
