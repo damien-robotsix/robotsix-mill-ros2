@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Fix structural indentation of Docker ecosystem entry in `.github/dependabot.yml` — the `docker` entry was incorrectly nested inside the `github-actions` block, producing orphaned fields and duplicate `cooldown` keys. Restructured as a proper independent list item at the `updates:` level.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.

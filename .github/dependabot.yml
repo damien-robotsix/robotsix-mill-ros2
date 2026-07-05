@@ -2,6 +2,16 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns: ["*"]
+    cooldown:
+      default-days: 7
+
   - package-ecosystem: "docker"
     directory: "/.devcontainer"
     schedule:
@@ -10,10 +20,6 @@ updates:
     open-pull-requests-limit: 3
     groups:
       docker:
-        patterns: ["*"]
-    cooldown:
-      default-days: 7
-      actions:
         patterns: ["*"]
     cooldown:
       default-days: 7
