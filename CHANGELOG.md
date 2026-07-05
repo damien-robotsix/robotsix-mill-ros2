@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add markdownlint-cli pre-commit hook with `.markdownlint.json` config for consistent documentation formatting. Hooks into both `pre-commit` (via `igorshubovych/markdownlint-cli` v0.49.0) and `just lint-markdown` / `just check` recipes.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
