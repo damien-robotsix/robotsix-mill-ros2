@@ -7,7 +7,19 @@ updates:
       day: "monday"
     open-pull-requests-limit: 3
     groups:
-      actions:
+      github-actions:
+        patterns: ["*"]
+    cooldown:
+      default-days: 7
+
+  - package-ecosystem: "docker"
+    directory: "/.devcontainer"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    groups:
+      docker:
         patterns: ["*"]
     cooldown:
       default-days: 7
