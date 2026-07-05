@@ -1,3 +1,7 @@
+## 0.0.0 (unreleased)
+
+- Updated ARCHITECTURE.md periodic stubs count from four to five,
+  adding the missing `changelog_autofill.yaml` to the enumeration.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
