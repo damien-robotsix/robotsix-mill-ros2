@@ -1,4 +1,5 @@
 exempt-authors:
+  - "@robotsix.local"
   - "dependabot[bot]"
   - "robotsix-mill"
   - "robotsix-mill[bot]"
