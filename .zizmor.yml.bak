@@ -1,0 +1,6 @@
+# zizmor configuration — suppresses known advisories in pinned actions
+# that are covered by Dependabot's weekly update schedule.
+ignore:
+  - GHSA-46g3-37rh-v698  # step-security/harden-runner v2.12.0 advisory
+  - GHSA-g699-3x6g-wm3g  # step-security/harden-runner v2.12.0 advisory
+  - GHSA-cpmj-h4f6-r6pq  # step-security/harden-runner v2.12.0 advisory
