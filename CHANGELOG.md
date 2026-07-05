@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
+- Add `changelog_autofill` periodic workflow to `.robotsix-mill/periodic/`.
 
 ### Added
 - Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
