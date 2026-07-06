@@ -8,7 +8,7 @@ that declares which downstream repositories to clone and from where.
 
 ## Layout
 
-```
+```text
 .
 ├── repos.yaml                    # vcs2l manifest: declares repos to clone into src/
 ├── scripts/update_workspace.sh   # runs `vcs import` + `vcs pull` from repos.yaml
@@ -73,6 +73,7 @@ this: it runs `yamllint --strict . && vcs validate --input repos.yaml`
 inside the sandbox.
 
 ## Rule: Dependabot entries must include a groups block
+
 **Rationale:** Collapses multiple updates into a single weekly PR with
 a safety cooldown, reducing churn and review overhead.
 
@@ -83,6 +84,7 @@ a safety cooldown, reducing churn and review overhead.
   `pre-commit` entries.
 
 ## Rule: No source edits in this repo
+
 **Rationale:** This repo is a workspace orchestrator; downstream
 packages live in their own repositories declared in `repos.yaml`.
 
@@ -90,6 +92,7 @@ Do not add ROS2 packages, Python modules, or C++ source here — those
 belong in downstream repositories.
 
 ## Rule: Add entries, not forks
+
 **Rationale:** Keeps the workspace identity unified and avoids
 divergent skeletons that drift apart.
 
@@ -98,6 +101,7 @@ in `repos.yaml`. Do not fork the skeleton unless you need a divergent
 workspace identity.
 
 ## Rule: YAML linting is strict
+
 **Rationale:** The CI and robotsix-mill test gate enforce
 `yamllint --strict`; non-conforming YAML breaks the pipeline.
 
@@ -105,6 +109,7 @@ All YAML files must pass `yamllint --strict` with the repo's
 `.yamllint` config (no `document-start` markers).
 
 ## Rule: Shell scripts must pass ShellCheck
+
 **Rationale:** Pre-commit and CI both run `shellcheck`; violations
 block merge.
 
@@ -112,6 +117,7 @@ The update script and any new shell scripts are linted via
 `shellcheck`.
 
 ## Rule: No network in CI/mill sandbox
+
 **Rationale:** `vcs import` and `vcs pull` require network access
 which is unavailable in sandboxed CI and robotsix-mill environments.
 
@@ -119,6 +125,7 @@ The test gate validates only the manifest syntax, not the clone
 operation. Do not rely on network-dependent steps in CI.
 
 ## Rule: Pre-commit must pass
+
 **Rationale:** All commits must pass the hooks in
 `.pre-commit-config.yaml`; failing hooks block CI.
 
