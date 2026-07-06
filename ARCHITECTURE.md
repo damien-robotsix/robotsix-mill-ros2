@@ -155,11 +155,16 @@ The same checks are mirrored for the robotsix-mill tooling in
 declares `languages: [shell]`, a `test_command` running
 `yamllint --strict . && python3 -m vcs2l.commands.vcs validate --input
 repos.yaml`, and `extra_sandbox_packages: [pip:yamllint, pip:vcs2l]`.
-The `.robotsix-mill/periodic/` directory previously held built-in
-workflow stubs but is currently empty — all periodic (scheduled)
-workflows have been removed to pause auto-generated ticket creation
-board-wide. Workflows can be restored one at a time by re-adding
-their `.yaml` stubs.
+The `.robotsix-mill/periodic/` directory holds built-in workflow stubs
+for four periodic (scheduled) workflows:
+[`audit`](.robotsix-mill/periodic/audit.yaml),
+[`changelog_autofill`](.robotsix-mill/periodic/changelog_autofill.yaml),
+[`health`](.robotsix-mill/periodic/health.yaml), and
+[`security_posture`](.robotsix-mill/periodic/security_posture.yaml).
+Each stub declares a cron schedule and an intent so the mill can
+auto-generate tickets on a regular cadence. Stubs can be removed or
+re-added to pause or resume individual workflows without changing
+the mill configuration.
 
 Release coordination follows from the floating manifest: downstream
 repositories cut their own releases on their own branches, and the
