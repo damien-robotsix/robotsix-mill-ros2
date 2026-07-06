@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add `repo_description_sync` periodic workflow to keep forge description in sync with README.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
