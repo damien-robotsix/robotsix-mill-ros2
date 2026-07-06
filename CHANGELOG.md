@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `changelog_autofill` periodic workflow to `.robotsix-mill/periodic/`.
 
 ### Added
+
+- Add markdownlint-cli pre-commit hook with `.markdownlint.json` config for consistent documentation formatting. Hooks into both `pre-commit` (via `igorshubovych/markdownlint-cli` v0.49.0) and `just lint-markdown` / `just check` recipes.
 - Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
 - Restore CHANGELOG.md structure: move `# Changelog` to line 1, merge orphaned `## 0.0.0 (unreleased)` entries into `## [Unreleased]`, and add pygrep pre-commit hook to enforce first-line convention.
 - Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
@@ -30,17 +32,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AGENT.md`: Documented Dependabot groups-and-cooldown convention for all package ecosystems.
 - `.github/workflows/ci.yaml`: Added `zizmor` security audit job for GitHub Actions workflows.
 - `.pre-commit-config.yaml`: Added `zizmorcore/zizmor-pre-commit` hook for local security scanning.
+
 ### Changed
+
 - Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - `README.md`: Added License badge (MIT) linking to the OSI license page.
+
 ### Fixed
+
 - Fix ARCHITECTURE.md periodic stubs count: correct "four" to "five" and add `changelog_autofill.yaml` to the enumeration of `.robotsix-mill/periodic/` workflow stubs.
 - Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
+
 ### Removed
 
 ## [0.1.0] — YYYY-MM-DD
 
 ### Added
+
 - Initial release: workspace skeleton with `repos.yaml`, `scripts/update_workspace.sh`,
   CI lint workflow (yamllint, shellcheck, vcs-validate, actionlint, codespell),
   pre-commit mirror hooks, community docs (README, CONTRIBUTING, SECURITY, ARCHITECTURE),

@@ -16,7 +16,7 @@ workspace — see [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 ## Layout
 
-```
+```text
 .
 ├── repos.yaml                 # vcs2l manifest: which repos to clone into src/
 ├── scripts/update_workspace.sh # clones/updates src/ from repos.yaml
