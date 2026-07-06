@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add `lint-markdown` recipe to justfile and include it in the `check` dependency list after `lint-spelling`.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
