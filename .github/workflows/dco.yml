@@ -11,10 +11,54 @@ jobs:
   dco:
     permissions:
       contents: read
-      pull-requests: read
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
-      - uses: KineticCafe/actions-dco@1da04282bbf757dab7d92a5c8535dbfb8113da5c  # v3.1.0
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
-          exempt-authors: "@robotsix.local"
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Check DCO
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          echo "Checking DCO for commits ${BASE_SHA}..${HEAD_SHA}"
+
+          COMMITS=$(git rev-list --no-merges "${BASE_SHA}..${HEAD_SHA}" || true)
+          if [ -z "$COMMITS" ]; then
+            echo "No commits to check — DCO passes vacuously"
+            exit 0
+          fi
+
+          FAILED=0
+          for commit in $COMMITS; do
+            author=$(git log -1 --format='%ae' "$commit")
+            subject=$(git log -1 --format='%s' "$commit")
+
+            # Exempt robotsix.local authors
+            case "$author" in
+              *@robotsix.local)
+                echo "OK (exempt): $commit $subject ($author)"
+                continue
+                ;;
+            esac
+
+            # Check for Signed-off-by trailer
+            if git log -1 --format='%(trailers:key=Signed-off-by,valueonly)' "$commit" \
+                | grep -q '[^[:space:]]'; then
+              echo "OK: $commit $subject"
+            else
+              echo "FAIL: $commit $subject — missing Signed-off-by"
+              FAILED=1
+            fi
+          done
+
+          if [ "$FAILED" -ne 0 ]; then
+            echo "DCO check failed: $FAILED commit(s) lack a Signed-off-by trailer"
+            exit 1
+          fi
+          echo "DCO check passed"

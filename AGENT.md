@@ -15,7 +15,7 @@ that declares which downstream repositories to clone and from where.
 ├── src/                          # ephemeral checkout (git-ignored)
 ├── .robotsix-mill/config.yaml    # robotsix-mill test gate (yamllint + vcs validate)
 ├── .github/workflows/ci.yaml     # CI: yamllint, shellcheck, vcs validate, actionlint, zizmor, codespell
-├── .robotsix-mill/periodic/      # audit.yaml, health.yaml, survey.yaml (built-in stubs)
+├── .robotsix-mill/periodic/      # (empty — all periodic workflow stubs removed)
 ├── .pre-commit-config.yaml       # pre-commit hooks
 ├── ARCHITECTURE.md               # design rationale
 ├── CONTRIBUTING.md               # contribution guide
