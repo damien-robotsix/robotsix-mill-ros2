@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Add `.robotsix-mill/periodic/` with four applicable periodic workflows: `changelog_autofill`, `security_posture`, `audit`, and `health`.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -13,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix structural indentation of Docker ecosystem entry in `.github/dependabot.yml` — the `docker` entry was incorrectly nested inside the `github-actions` block, producing orphaned fields and duplicate `cooldown` keys. Restructured as a proper independent list item at the `updates:` level.
 - Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
 - Add `changelog_autofill` periodic workflow to `.robotsix-mill/periodic/`.
+- Add `.robotsix-mill/periodic/` with four applicable periodic workflows: `changelog_autofill`, `security_posture`, `audit`, and `health`.
 
 ### Added
 
