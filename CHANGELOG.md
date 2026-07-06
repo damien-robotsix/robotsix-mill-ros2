@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Remove all periodic mill workflow files (audit, changelog_autofill, health, security_posture, survey) from `.robotsix-mill/periodic/` to pause auto-generated tickets board-wide
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -48,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
 
 ### Removed
+
+- Remove all periodic mill workflow files (audit, changelog_autofill, health, security_posture, survey) from `.robotsix-mill/periodic/` to pause auto-generated tickets board-wide
 
 ## [0.1.0] — YYYY-MM-DD
 
