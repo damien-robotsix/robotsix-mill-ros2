@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Update ARCHITECTURE.md to reflect the 4 active periodic workflow stubs in `.robotsix-mill/periodic/` (the description previously said the directory was empty).
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
