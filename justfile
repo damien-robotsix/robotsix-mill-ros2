@@ -1,5 +1,5 @@
 # Run the full lint + validation suite (default when `just` is typed with no args)
-check: lint-yaml lint-shell lint-spelling validate-manifest lint-actions lint-security lint-markdown
+check: lint-yaml lint-shell lint-spelling lint-markdown validate-manifest lint-actions lint-security
 
 # Lint all YAML files with yamllint
 lint-yaml:
