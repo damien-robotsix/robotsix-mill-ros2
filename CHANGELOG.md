@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Remove all periodic mill workflow files (audit, changelog_autofill, health, security_posture, survey) from `.robotsix-mill/periodic/` to pause auto-generated tickets board-wide
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
