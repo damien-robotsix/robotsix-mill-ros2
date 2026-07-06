@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Add `.robotsix-mill/periodic/` with four applicable periodic workflows: `changelog_autofill`, `security_posture`, `audit`, and `health`.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
