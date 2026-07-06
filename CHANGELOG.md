@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Add `repo_description_sync` periodic workflow to keep forge description in sync with README.
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -18,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add `repo_description_sync` periodic workflow to keep forge description in sync with README.
 - Add `lint-markdown` recipe to justfile and include it in the `check` dependency list after `lint-spelling`.
 - Add markdownlint-cli pre-commit hook with `.markdownlint.json` config for consistent documentation formatting. Hooks into both `pre-commit` (via `igorshubovych/markdownlint-cli` v0.49.0) and `just lint-markdown` / `just check` recipes.
 - Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
