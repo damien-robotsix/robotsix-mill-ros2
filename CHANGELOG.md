@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Remove all periodic mill workflow presence files under `.robotsix-mill/periodic/` to pause auto-generated board tickets (audit, health, security_posture, etc.).
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
