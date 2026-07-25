@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -8,14 +5,9 @@ All notable changes to robotsix-mill are documented in this file.
 The format is adapted from [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## 0.0.0 (unreleased)
 
-- Enable initial periodic workflows: audit, health, and repo_description_sync presence stubs under `.robotsix-mill/periodic/`
-- Update ARCHITECTURE.md to reflect the 4 active periodic workflow stubs in `.robotsix-mill/periodic/` (the description previously said the directory was empty).
-- Fix structural indentation of Docker ecosystem entry in `.github/dependabot.yml` — the `docker` entry was incorrectly nested inside the `github-actions` block, producing orphaned fields and duplicate `cooldown` keys. Restructured as a proper independent list item at the `updates:` level.
-- Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
-- Add `changelog_autofill` periodic workflow to `.robotsix-mill/periodic/`.
-- Add `.robotsix-mill/periodic/` with four applicable periodic workflows: `changelog_autofill`, `security_posture`, `audit`, and `health`.
+- Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
 
 ### Added
 
