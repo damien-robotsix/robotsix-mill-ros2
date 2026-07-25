@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.0.0 (unreleased)
 
+- Enable `completeness_check` periodic workflow to validate repo manifest completeness (repos.yaml, pre-commit hooks, CI workflows, shell scripts)
 - Add `check-json` pre-commit hook to validate JSON config files (`.devcontainer/devcontainer.json`, `.markdownlint.json`)
 - Enable the `survey` periodic mill workflow
 - Add `changelog_autofill` periodic workflow stub to enable deterministic changelog maintenance.
