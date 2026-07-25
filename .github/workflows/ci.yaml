@@ -36,6 +36,9 @@ jobs:
           - name: Codespell
             recipe: lint-spelling
             pip: codespell
+          - name: Markdown Lint
+            recipe: lint-markdown
+            npm: markdownlint-cli
           - name: Actionlint
             recipe: lint-actions
             actionlint: true
@@ -51,6 +54,9 @@ jobs:
       - name: Install apt tool
         if: ${{ matrix.apt }}
         run: sudo apt-get install -y ${{ matrix.apt }}
+      - name: Install npm tool
+        if: ${{ matrix.npm }}
+        run: sudo npm install -g ${{ matrix.npm }}
       - name: Install actionlint
         if: ${{ matrix.actionlint }}
         run: |
