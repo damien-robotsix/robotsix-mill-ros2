@@ -36,6 +36,9 @@ jobs:
           - name: Codespell
             recipe: lint-spelling
             pip: codespell
+          - name: Markdown Lint
+            recipe: lint-markdown
+            pip: markdownlint-cli
           - name: Actionlint
             recipe: lint-actions
             actionlint: true
