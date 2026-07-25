@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.0.0 (unreleased)
 
+- Add `check-json` pre-commit hook to validate JSON config files (`.devcontainer/devcontainer.json`, `.markdownlint.json`)
 - Enable the `survey` periodic mill workflow
 - Add `changelog_autofill` periodic workflow stub to enable deterministic changelog maintenance.
 - Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
