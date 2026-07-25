@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
