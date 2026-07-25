@@ -1,3 +1,6 @@
+## 0.0.0 (unreleased)
+
+- Enable initial periodic workflows: audit, health, and repo_description_sync presence stubs under `.robotsix-mill/periodic/`
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
