@@ -1,6 +1,3 @@
-## 0.0.0 (unreleased)
-
-- Enable initial periodic workflows: audit, health, and repo_description_sync presence stubs under `.robotsix-mill/periodic/`
 # Changelog
 
 All notable changes to robotsix-mill are documented in this file.
@@ -10,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Enable initial periodic workflows: audit, health, and repo_description_sync presence stubs under `.robotsix-mill/periodic/`
 - Update ARCHITECTURE.md to reflect the 4 active periodic workflow stubs in `.robotsix-mill/periodic/` (the description previously said the directory was empty).
 - Fix structural indentation of Docker ecosystem entry in `.github/dependabot.yml` — the `docker` entry was incorrectly nested inside the `github-actions` block, producing orphaned fields and duplicate `cooldown` keys. Restructured as a proper independent list item at the `updates:` level.
 - Remove `--pid=host` from devcontainer `runArgs` to restore PID namespace isolation and eliminate a container escape vector.
