@@ -156,10 +156,14 @@ declares `languages: [shell]`, a `test_command` running
 `yamllint --strict . && python3 -m vcs2l.commands.vcs validate --input
 repos.yaml`, and `extra_sandbox_packages: [pip:yamllint, pip:vcs2l]`.
 The `.robotsix-mill/periodic/` directory holds built-in workflow stubs
-for three periodic (scheduled) workflows:
+for seven periodic (scheduled) workflows:
 [`audit`](.robotsix-mill/periodic/audit.yaml),
-[`health`](.robotsix-mill/periodic/health.yaml), and
-[`repo_description_sync`](.robotsix-mill/periodic/repo_description_sync.yaml).
+[`changelog_autofill`](.robotsix-mill/periodic/changelog_autofill.yaml),
+[`completeness_check`](.robotsix-mill/periodic/completeness_check.yaml),
+[`copy_paste`](.robotsix-mill/periodic/copy_paste.yaml),
+[`health`](.robotsix-mill/periodic/health.yaml),
+[`repo_description_sync`](.robotsix-mill/periodic/repo_description_sync.yaml), and
+[`survey`](.robotsix-mill/periodic/survey.yaml).
 Each stub declares a cron schedule and an intent so the mill can
 auto-generate tickets on a regular cadence. Stubs can be removed or
 re-added to pause or resume individual workflows without changing
