@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.0.0 (unreleased)
 
+- Update AGENT.md and ARCHITECTURE.md to document all seven periodic workflow stubs (audit, changelog_autofill, completeness_check, copy_paste, health, repo_description_sync, survey)
 - CI: add `lint-markdown` matrix entry (markdownlint-cli) to the lint job.
 - Enable `completeness_check` periodic workflow to validate repo manifest completeness (repos.yaml, pre-commit hooks, CI workflows, shell scripts)
 - Enable `copy_paste` periodic workflow (jscpd) for YAML/shell copy-paste detection across `.pre-commit-config.yaml`, `.robotsix-mill/config.yaml`, CI workflows, and issue templates.
