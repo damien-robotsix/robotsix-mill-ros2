@@ -1,5 +1,5 @@
 # Run the full lint + validation suite (default when `just` is typed with no args)
-check: lint-yaml lint-shell lint-spelling lint-markdown validate-manifest lint-actions lint-security
+check: lint-yaml lint-shell lint-spelling lint-markdown lint-docker validate-manifest lint-actions lint-security
 
 # Lint all YAML files with yamllint
 lint-yaml:
@@ -24,6 +24,10 @@ lint-actions:
 # Run zizmor security analysis on CI workflows
 lint-security:
     zizmor --quiet .
+
+# Lint Dockerfile with hadolint
+lint-docker:
+    hadolint .devcontainer/Dockerfile
 
 # Lint all Markdown files with markdownlint
 lint-markdown:
