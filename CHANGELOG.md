@@ -7,21 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.0.0 (unreleased)
 
-- Update AGENT.md and ARCHITECTURE.md to document all seven periodic workflow stubs (audit, changelog_autofill, completeness_check, copy_paste, health, repo_description_sync, survey)
-- CI: add `lint-markdown` matrix entry (markdownlint-cli) to the lint job.
-- Enable `completeness_check` periodic workflow to validate repo manifest completeness (repos.yaml, pre-commit hooks, CI workflows, shell scripts)
-- Enable `copy_paste` periodic workflow (jscpd) for YAML/shell copy-paste detection across `.pre-commit-config.yaml`, `.robotsix-mill/config.yaml`, CI workflows, and issue templates.
-- Add `check-json` pre-commit hook to validate JSON files.
-- Add `check-json` pre-commit hook to validate JSON config files (`.devcontainer/devcontainer.json`, `.markdownlint.json`)
-- Enable the `survey` periodic mill workflow
-- Add `changelog_autofill` periodic workflow stub to enable deterministic changelog maintenance.
-- Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
-
 ### Added
 
+- Enable `completeness_check` periodic workflow to validate repo manifest completeness (repos.yaml, pre-commit hooks, CI workflows, shell scripts)
+- Enable `copy_paste` periodic workflow (jscpd) for YAML/shell copy-paste detection across `.pre-commit-config.yaml`, `.robotsix-mill/config.yaml`, CI workflows, and issue templates.
+- Enable the `survey` periodic mill workflow
+- Add `changelog_autofill` periodic workflow stub to enable deterministic changelog maintenance.
+- Add `check-json` pre-commit hook to validate JSON files (`.devcontainer/devcontainer.json`, `.markdownlint.json`).
 - Add `repo_description_sync` periodic workflow to keep forge description in sync with README.
 - Add `lint-markdown` recipe to justfile and include it in the `check` dependency list after `lint-spelling`.
-- Add markdownlint-cli pre-commit hook with `.markdownlint.json` config for consistent documentation formatting. Hooks into both `pre-commit` (via `igorshubovych/markdownlint-cli` v0.49.0) and `just lint-markdown` / `just check` recipes.
+- Add markdownlint-cli pre-commit hook with `.markdownlint.json` config for consistent documentation formatting. Hooks into both `pre-commit` (via `igorshubovych/markdownlint-cli` v0.49.0) and `just lint-markdown` / `just check` recipes, and adds a `lint-markdown` matrix entry to the CI lint job.
 - Update ARCHITECTURE.md periodic stubs count from three to four, adding the missing `security_posture.yaml` stub.
 - Restore CHANGELOG.md structure: move `# Changelog` to line 1, merge orphaned `## 0.0.0 (unreleased)` entries into `## [Unreleased]`, and add pygrep pre-commit hook to enforce first-line convention.
 - Add `#` doc-comment lines to every recipe in `justfile` so `just --list` shows a short description for each target.
@@ -43,17 +38,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Update AGENT.md and ARCHITECTURE.md to document all seven periodic workflow stubs (audit, changelog_autofill, completeness_check, copy_paste, health, repo_description_sync, survey)
 - Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - `README.md`: Added License badge (MIT) linking to the OSI license page.
 
 ### Fixed
 
+- Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
 - Fix ARCHITECTURE.md periodic stubs count: correct "four" to "five" and add `changelog_autofill.yaml` to the enumeration of `.robotsix-mill/periodic/` workflow stubs.
 - Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
 
 ### Removed
 
-- Remove all periodic mill workflow files (audit, changelog_autofill, health, security_posture, survey) from `.robotsix-mill/periodic/` to pause auto-generated tickets board-wide
+- Remove `security_posture` periodic workflow stub from `.robotsix-mill/periodic/`
 
 ## [0.1.0] — YYYY-MM-DD
 
