@@ -11,7 +11,7 @@ ARG USER_GID=$USER_UID
 # Re-create user if it exists (e.g. Ubuntu Noble ships 'ubuntu')
 RUN if id -u $USER_UID ; then userdel "$(id -un $USER_UID)" ; fi
 
-# hadolint ignore=DL3008 -- version pinning impractical on floating base image
+# hadolint ignore=DL3008
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && apt-get update \
@@ -20,7 +20,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# hadolint ignore=DL3008 -- version pinning impractical on floating base image
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
         python3-pip \
