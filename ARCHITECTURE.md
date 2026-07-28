@@ -164,8 +164,8 @@ for seven periodic (scheduled) workflows:
 [`health`](.robotsix-mill/periodic/health.yaml),
 [`repo_description_sync`](.robotsix-mill/periodic/repo_description_sync.yaml), and
 [`survey`](.robotsix-mill/periodic/survey.yaml).
-Each stub declares a cron schedule and an intent so the mill can
-auto-generate tickets on a regular cadence. Stubs can be removed or
+Each stub enables a built-in periodic workflow by name; the mill
+supplies the schedule and behavior. Stubs can be removed or
 re-added to pause or resume individual workflows without changing
 the mill configuration.
 

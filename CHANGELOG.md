@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix `ARCHITECTURE.md` periodic stubs description: stubs only declare a `name:` field, not a cron schedule or intent — the mill supplies those.
 - Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
 - Fix ARCHITECTURE.md periodic stubs count: correct "four" to "five" and add `changelog_autofill.yaml` to the enumeration of `.robotsix-mill/periodic/` workflow stubs.
 - Fix pygrep pre-commit hook regex: use `\A` (file-start anchor) instead of `^` (line-start anchor) so the `changelog-first-line` hook actually validates the first line, rather than matching `# Changelog` anywhere in the file.
