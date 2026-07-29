@@ -49,3 +49,9 @@ repos:
         language: pygrep
         files: ^CHANGELOG\.md$
         args: ['--negate', '--multiline']
+      - id: vcs-validate
+        name: vcs validate repos.yaml
+        entry: vcs validate --input repos.yaml
+        language: system
+        files: ^repos.yaml$
+        pass_filenames: false
