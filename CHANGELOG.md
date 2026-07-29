@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add `vcs-validate` local pre-commit hook for manifest validation of `repos.yaml`
+- Add dedicated `Docker Lint` CI matrix entry for hadolint, reporting Dockerfile lint failures under a clear job name instead of burying them in the generic Pre-commit job.
 - Restrict stale workflow top-level permissions to `{}`; job-level permissions remain unchanged.
 - Add hadolint pre-commit hook for Dockerfile linting, a `lint-docker` just recipe, and fix the first `apt-get install` block in `.devcontainer/Dockerfile` to include `rm -rf /var/lib/apt/lists/*` cleanup.
 - Enable `completeness_check` periodic workflow to validate repo manifest completeness (repos.yaml, pre-commit hooks, CI workflows, shell scripts)

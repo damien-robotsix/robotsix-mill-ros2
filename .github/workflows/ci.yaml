@@ -42,6 +42,9 @@ jobs:
           - name: Actionlint
             recipe: lint-actions
             actionlint: true
+          - name: Docker Lint
+            recipe: lint-docker
+            hadolint: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -62,6 +65,11 @@ jobs:
         run: |
           bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
           sudo mv actionlint /usr/local/bin/
+      - name: Install hadolint
+        if: ${{ matrix.hadolint }}
+        run: |
+          curl -sSfL https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64 \
+            -o hadolint && chmod +x hadolint && sudo mv hadolint /usr/local/bin/
       - name: Run linter
         run: just ${{ matrix.recipe }}
 
