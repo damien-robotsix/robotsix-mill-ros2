@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Raise hadolint failure threshold in `lint-docker` recipe from default (info) to `error`, so warnings (DL3064) and info (DL3066) no longer fail the Docker Lint CI job.
 - Add `.github/CODEOWNERS` with catch-all rule routing PR reviews to `@damien-robotsix`.
+- Add weekly scheduled `Link Check` CI workflow (lychee) to detect broken external links in Markdown documentation, plus a lychee pre-commit hook for local link checking before commit.
 - Add `vcs-validate` local pre-commit hook to validate `repos.yaml` on commit.
 - Add dedicated `Docker Lint` CI matrix entry for hadolint, reporting Dockerfile lint failures under a clear job name instead of burying them in the generic Pre-commit job.
 - Restrict stale workflow top-level permissions to `{}`; job-level permissions remain unchanged.
