@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add `.github/CODEOWNERS` with catch-all rule routing PR reviews to `@damien-robotsix`.
 - Add `vcs-validate` local pre-commit hook to validate `repos.yaml` on commit.
 - Add `vcs-validate` local pre-commit hook for manifest validation of `repos.yaml`
 - Add dedicated `Docker Lint` CI matrix entry for hadolint, reporting Dockerfile lint failures under a clear job name instead of burying them in the generic Pre-commit job.
