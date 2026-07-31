@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Replace legacy `python3-vcstool` with `vcs2l` (pip install) in devcontainer Dockerfile to match the repo's vcs2l manifest format
 - Add top-level `permissions: {}` to `.github/workflows/dependabot-auto-merge.yml`, matching the pattern in `dco.yml` and `stale.yml`.
 - Raise hadolint failure threshold in `lint-docker` recipe from default (info) to `error`, so warnings (DL3064) and info (DL3066) no longer fail the Docker Lint CI job.
 - Add `.github/CODEOWNERS` with catch-all rule routing PR reviews to `@damien-robotsix`.
