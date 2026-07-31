@@ -27,24 +27,31 @@ jobs:
           - name: YAML Lint
             recipe: lint-yaml
             pip: yamllint
+            version: "1.38.0"
           - name: ShellCheck
             recipe: lint-shell
-            apt: shellcheck
+            shellcheck: true
+            version: "0.11.0"
           - name: VCS Validate
             recipe: validate-manifest
             pip: vcs2l
+            version: "1.1.7"
           - name: Codespell
             recipe: lint-spelling
             pip: codespell
+            version: "2.4.2"
           - name: Markdown Lint
             recipe: lint-markdown
             npm: markdownlint-cli
+            version: "0.49.0"
           - name: Actionlint
             recipe: lint-actions
             actionlint: true
+            version: "1.7.12"
           - name: Docker Lint
             recipe: lint-docker
             hadolint: true
+            version: "2.14.0"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -53,22 +60,27 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y just
       - name: Install pip tool
         if: ${{ matrix.pip }}
-        run: pip install ${{ matrix.pip }}
-      - name: Install apt tool
-        if: ${{ matrix.apt }}
-        run: sudo apt-get install -y ${{ matrix.apt }}
+        run: pip install ${{ matrix.pip }}==${{ matrix.version }}
+      - name: Install shellcheck
+        if: ${{ matrix.shellcheck }}
+        run: |
+          curl -sSfL "https://github.com/koalaman/shellcheck/releases/download/v${{ matrix.version }}/shellcheck-v${{ matrix.version }}.linux.x86_64.tar.xz" \
+            -o shellcheck.tar.xz
+          tar -xf shellcheck.tar.xz
+          sudo mv "shellcheck-v${{ matrix.version }}/shellcheck" /usr/local/bin/
+          rm -rf shellcheck.tar.xz "shellcheck-v${{ matrix.version }}"
       - name: Install npm tool
         if: ${{ matrix.npm }}
-        run: sudo npm install -g ${{ matrix.npm }}
+        run: sudo npm install -g ${{ matrix.npm }}@${{ matrix.version }}
       - name: Install actionlint
         if: ${{ matrix.actionlint }}
         run: |
-          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${{ matrix.version }}"
           sudo mv actionlint /usr/local/bin/
       - name: Install hadolint
         if: ${{ matrix.hadolint }}
         run: |
-          curl -sSfL https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64 \
+          curl -sSfL "https://github.com/hadolint/hadolint/releases/download/v${{ matrix.version }}/hadolint-Linux-x86_64" \
             -o hadolint && chmod +x hadolint && sudo mv hadolint /usr/local/bin/
       - name: Run linter
         run: just ${{ matrix.recipe }}
