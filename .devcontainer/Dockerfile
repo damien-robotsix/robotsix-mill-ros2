@@ -30,7 +30,7 @@ RUN apt-get update && apt-get upgrade -y \
         git \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install vcs2l
+RUN pip install --no-cache-dir vcs2l==1.1.7
 
 ENV SHELL=/bin/bash
 
