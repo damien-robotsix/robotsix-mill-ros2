@@ -13,6 +13,10 @@ repos:
     rev: v0.11.0
     hooks:
       - id: shellcheck
+  - repo: https://github.com/lycheeverse/lychee
+    rev: v0.9.0
+    hooks:
+      - id: lychee
   - repo: https://github.com/shenxianpeng/hadolint-pre-commit
     rev: v2.14.0.1
     hooks:
