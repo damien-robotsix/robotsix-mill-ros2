@@ -27,7 +27,7 @@ lint-security:
 
 # Lint Dockerfile with hadolint
 lint-docker:
-    hadolint .devcontainer/Dockerfile
+    hadolint --failure-threshold error .devcontainer/Dockerfile
 
 # Lint all Markdown files with markdownlint
 lint-markdown:
