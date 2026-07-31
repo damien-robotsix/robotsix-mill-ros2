@@ -24,12 +24,13 @@ RUN groupadd --gid $USER_GID $USERNAME \
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
         python3-pip \
-        python3-vcstool \
         python3-colcon-common-extensions \
         build-essential \
         cmake \
         git \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install vcs2l
 
 ENV SHELL=/bin/bash
 
