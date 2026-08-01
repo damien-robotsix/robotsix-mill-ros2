@@ -64,7 +64,10 @@ re-running the update script. Build outputs (`build/`, `install/`,
 # Pre-commit (runs yamllint, shellcheck, end-of-file-fixer, trailing-whitespace, codespell)
 pre-commit run --all-files
 
-# Run all lint/validate commands
+# Full CI gate (lint + all pre-commit hooks)
+just check-all
+
+# Fast local lint subset
 just check
 ```
 
