@@ -13,6 +13,13 @@ repos:
     rev: v0.11.0
     hooks:
       - id: shellcheck
+  - repo: https://github.com/lycheeverse/lychee
+    rev: v0.15.1
+    hooks:
+      - id: lychee
+        language: docker
+        types: [file]
+        args: [--no-progress]
   - repo: https://github.com/shenxianpeng/hadolint-pre-commit
     rev: v2.14.0.1
     hooks:
