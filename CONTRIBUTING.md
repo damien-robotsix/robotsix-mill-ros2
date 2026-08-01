@@ -43,9 +43,11 @@ CI runs the individual lint/validate commands defined in the
 You can reproduce them locally before pushing:
 
 ```sh
-pre-commit run --all-files                 # runs the hooks
-just check                                 # runs all lint/validate commands
+just check-all                             # runs the full CI gate (lint + all pre-commit hooks)
 ```
+
+For a faster check during development, `just check` runs only the
+individual lint commands (without the pre-commit hooks).
 
 The repo's [`.yamllint`](.yamllint) disables the `document-start` rule.
 

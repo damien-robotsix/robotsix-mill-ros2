@@ -1,5 +1,9 @@
-# Run the full lint + validation suite (default when `just` is typed with no args)
+# Run the fast local lint subset; run `just check-all` for the full CI gate (default when `just` is typed with no args)
 check: lint-yaml lint-shell lint-spelling lint-markdown lint-docker validate-manifest lint-actions lint-security
+
+# Run the full CI gate (just check + all pre-commit hooks). Slower; use before pushing.
+check-all: check
+    pre-commit run --all-files
 
 # Lint all YAML files with yamllint
 lint-yaml:
