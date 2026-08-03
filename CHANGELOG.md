@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Remove stale `[0.1.0]` placeholder release section and its broken link reference from CHANGELOG.md — no release exists at that tag, causing the link-check CI workflow to fail with a 404.
 - Fix `ARCHITECTURE.md` periodic stubs description: stubs only declare a `name:` field, not a cron schedule or intent — the mill supplies those.
 - Fix `ARCHITECTURE.md` and `AGENT.md` periodic stub docs: remove stale references to `changelog_autofill` and `security_posture`, add `repo_description_sync`, and correct "four" to "three".
 - Fix ARCHITECTURE.md periodic stubs count: correct "four" to "five" and add `changelog_autofill.yaml` to the enumeration of `.robotsix-mill/periodic/` workflow stubs.
@@ -63,11 +64,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove `security_posture` periodic workflow stub from `.robotsix-mill/periodic/`
 
-## 0.1.0 — YYYY-MM-DD
 
-### Added
-
-- Initial release: workspace skeleton with `repos.yaml`, `scripts/update_workspace.sh`,
-  CI lint workflow (yamllint, shellcheck, vcs-validate, actionlint, codespell),
-  pre-commit mirror hooks, community docs (README, CONTRIBUTING, SECURITY, ARCHITECTURE),
-  and contributor templates (issue forms, PR template).
