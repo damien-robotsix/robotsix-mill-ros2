@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Silence lychee false positive on `contributor-covenant.org/resources` attribution link in `CODE_OF_CONDUCT.md`.
 - Add `just check-all` recipe that runs the full CI gate (`just check` + `pre-commit run --all-files`); clarify `just check` is the fast subset.
 - Align hadolint pre-commit hook failure threshold with CI: add `--failure-threshold error` so warnings (DL3064) and info (DL3066) no longer fail `pre-commit run`.
+- Sync CI matrix tool versions with pre-commit hook revisions: codespell 2.4.2→2.4.3, markdownlint-cli 0.49.0→0.49.1
 - Replace legacy `python3-vcstool` with `vcs2l` (pip install) in devcontainer Dockerfile to match the repo's vcs2l manifest format
 - Add top-level `permissions: {}` to `.github/workflows/dependabot-auto-merge.yml`, matching the pattern in `dco.yml` and `stale.yml`.
 - Raise hadolint failure threshold in `lint-docker` recipe from default (info) to `error`, so warnings (DL3064) and info (DL3066) no longer fail the Docker Lint CI job.
