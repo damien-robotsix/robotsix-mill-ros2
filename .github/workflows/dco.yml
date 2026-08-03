@@ -47,12 +47,20 @@ jobs:
                 ;;
             esac
 
-            # Check for Signed-off-by trailer
-            if git log -1 --format='%(trailers:key=Signed-off-by,valueonly)' "$commit" \
-                | grep -q '[^[:space:]]'; then
+            signoff=$(git log -1 --format='%(trailers:key=Signed-off-by,valueonly)' "$commit" || true)
+
+            if [ -z "$signoff" ]; then
+              echo "FAIL: $commit $subject — missing Signed-off-by"
+              FAILED=1
+              continue
+            fi
+
+            # Extract email(s) from the Signed-off-by trailer(s) and
+            # require at least one to match the commit author email.
+            if printf '%s\n' "$signoff" | sed -n 's/.*<\([^>]*\)>.*/\1/p' | grep -qFx "$author"; then
               echo "OK: $commit $subject"
             else
-              echo "FAIL: $commit $subject — missing Signed-off-by"
+              echo "FAIL: $commit $subject — no Signed-off-by matches author email $author"
               FAILED=1
             fi
           done
