@@ -119,7 +119,7 @@ jobs:
         with:
           python-version: "3.x"
       - name: Install vcs2l (needed for vcs-validate pre-commit hook)
-        run: pip install vcs2l
+        run: pip install vcs2l==1.1.7
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd  # v3.0.1
         with:
           extra_args: --all-files --verbose
