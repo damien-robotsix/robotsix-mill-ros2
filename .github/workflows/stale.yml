@@ -30,6 +30,8 @@ jobs:
             contribution.
           days-before-stale: 60
           days-before-close: 14
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
           exempt-issue-labels: bug,enhancement,help wanted
           exempt-pr-labels: ""
           stale-issue-label: stale
