@@ -103,7 +103,14 @@ jobs:
     permissions: {}
     name: Pre-commit
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    # Generous on purpose. A cold run installs every hook environment before
+    # the first hook executes (~4m18s observed), and pre-commit/action only
+    # saves its cache in a post-step. At the previous 5m this job was killed
+    # before that step ran, so the cache was never written, so the next run
+    # started cold too — every run from 2026-08-02 to 2026-08-07 was cancelled
+    # at ~5m15s and the job had never once passed. Warm runs finish in well
+    # under a minute; this ceiling only has to cover the cold one.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:

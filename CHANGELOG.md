@@ -62,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove `security_posture` periodic workflow stub from `.robotsix-mill/periodic/`
 
-## [0.1.0] — YYYY-MM-DD
+## 0.1.0 — YYYY-MM-DD
 
 ### Added
 
@@ -70,5 +70,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   CI lint workflow (yamllint, shellcheck, vcs-validate, actionlint, codespell),
   pre-commit mirror hooks, community docs (README, CONTRIBUTING, SECURITY, ARCHITECTURE),
   and contributor templates (issue forms, PR template).
-
-[0.1.0]: https://github.com/damien-robotsix/robotsix-mill-ros2/releases/tag/v0.1.0
