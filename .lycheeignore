@@ -1,0 +1,8 @@
+# GitHub Actions expressions are not URLs. lychee scans workflow files as plain
+# text, so a templated download URL such as
+#   https://github.com/koalaman/shellcheck/releases/download/v${{ matrix.version }}/...
+# is harvested with the expression stripped, leaving a literal "v$" path that
+# 404s. The links are correct once Actions expands them; only the pre-expansion
+# text is unresolvable.
+^https://github\.com/koalaman/shellcheck/releases/download/v\$
+^https://github\.com/hadolint/hadolint/releases/download/v\$
