@@ -19,6 +19,12 @@ repos:
       - id: lychee
         language: docker
         types: [file]
+        # .lycheeignore holds URL *patterns*, not links. Scanning it makes
+        # lychee harvest its own exclusion regexes as URLs — the escaped dot
+        # in `https://github\.com/...` truncates to `https://github`, which
+        # then fails to resolve. Excluding the file keeps the hook from
+        # failing on its own configuration.
+        exclude: ^\.lycheeignore$
         args: [--no-progress]
   - repo: https://github.com/shenxianpeng/hadolint-pre-commit
     rev: v2.14.0.1
