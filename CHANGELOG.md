@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add `scripts/verify_refs.sh` and `just verify-refs` recipe to check that every `version:` ref in `repos.yaml` resolves on its remote (requires network; dev-only).
+- Add `just workspace-status` recipe showing workspace drift via `vcs status` and `vcs export --exact` diff against `repos.yaml` (local, no network).
+- Document both recipes in a new "Verify the workspace" section of README.md.
 - Silence lychee false positive on `contributor-covenant.org/resources` attribution link in `CODE_OF_CONDUCT.md`.
 - Add `just check-all` recipe that runs the full CI gate (`just check` + `pre-commit run --all-files`); clarify `just check` is the fast subset.
 - Align hadolint pre-commit hook failure threshold with CI: add `--failure-threshold error` so warnings (DL3064) and info (DL3066) no longer fail `pre-commit run`.

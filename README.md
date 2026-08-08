@@ -56,6 +56,24 @@ then run:
 This imports every repo listed in `repos.yaml` into `src/` and pulls
 updates for any already-cloned repos, so it is safe to re-run.
 
+## Verify the workspace
+
+Two `just` recipes help you detect workspace drift. Both are **dev-only**
+commands that are intentionally excluded from CI and the `just check`
+aggregate:
+
+- `just verify-refs` — checks that every `version:` ref declared in
+  `repos.yaml` still resolves on its remote (requires network; runs
+  `git ls-remote`).
+- `just workspace-status` — a **local, no-network** check that runs
+  `vcs status src` and diffs the live checkout state (`vcs export --exact`)
+  against the committed `repos.yaml` so you can see exactly which repos
+  have drifted off their declared refs.
+
+Use `just workspace-status` before running `./scripts/update_workspace.sh`
+to preview what will change, and `just verify-refs` to confirm that every
+declared ref still exists on the remote before attempting a pull.
+
 ## Development container
 
 This repository includes a [development container](https://containers.dev/) configuration
