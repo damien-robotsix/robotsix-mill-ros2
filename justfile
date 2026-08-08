@@ -9,9 +9,9 @@ check-all: check
 lint-yaml:
     yamllint --strict .
 
-# Lint scripts/update_workspace.sh with shellcheck
+# Lint shell scripts with shellcheck
 lint-shell:
-    shellcheck scripts/update_workspace.sh
+    shellcheck scripts/update_workspace.sh scripts/verify_refs.sh
 
 # Check spelling across the repo with codespell
 lint-spelling:
@@ -20,6 +20,18 @@ lint-spelling:
 # Validate repos.yaml structure with vcs validate
 validate-manifest:
     vcs validate --input repos.yaml
+
+# Verify that every version: ref in repos.yaml resolves on its remote (requires network; dev-only)
+verify-refs:
+    ./scripts/verify_refs.sh
+
+# Show workspace drift: vcs status + diff of vcs export --exact against repos.yaml (local, no network)
+workspace-status:
+    @echo "=== vcs status ==="
+    -vcs status src
+    @echo ""
+    @echo "=== drift from repos.yaml (vcs export --exact vs committed repos.yaml) ==="
+    vcs export --exact src | diff repos.yaml - || true
 
 # Lint GitHub Actions workflow files with actionlint
 lint-actions:
