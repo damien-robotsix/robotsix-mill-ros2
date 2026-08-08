@@ -8,7 +8,7 @@ permissions: {}
 
 jobs:
   wait-for-ci:
-    if: github.actor == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'github_actions')
+    if: github.triggering_actor == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'github_actions')
     permissions:
       checks: read
     runs-on: ubuntu-latest
@@ -73,7 +73,7 @@ jobs:
 
   auto-merge:
     needs: wait-for-ci
-    if: github.actor == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'github_actions')
+    if: github.triggering_actor == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'github_actions')
     permissions:
       contents: write
       pull-requests: write
