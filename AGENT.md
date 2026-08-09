@@ -1,4 +1,4 @@
-# AGENT.md — robotsix-mill-ros2
+# AGENT.md — robotsix-mill
 
 This repo follows the [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards).
 

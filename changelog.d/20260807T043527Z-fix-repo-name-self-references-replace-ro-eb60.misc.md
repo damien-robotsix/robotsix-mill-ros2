@@ -1,0 +1,1 @@
+Fix repo name self-references: replace `robotsix-mill-ros2` with `robotsix-mill` in README title/CI badge, AGENT.md heading, ARCHITECTURE.md/CONTRIBUTING.md prose, and security advisory link in issue template config.
