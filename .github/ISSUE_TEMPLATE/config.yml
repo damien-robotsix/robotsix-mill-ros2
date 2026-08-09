@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Report a security vulnerability
     url: >-
-      https://github.com/damien-robotsix/robotsix-mill/security/advisories/new
+      https://github.com/damien-robotsix/robotsix-mill-ros2/security/advisories/new
     about: >-
       Report security vulnerabilities privately via GitHub's "Report a
       vulnerability" process, as described in SECURITY.md. Do not file
