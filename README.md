@@ -1,6 +1,6 @@
-# robotsix-mill-ros2
+# robotsix-mill
 
-[![CI](https://github.com/damien-robotsix/robotsix-mill-ros2/actions/workflows/ci.yaml/badge.svg)](https://github.com/damien-robotsix/robotsix-mill-ros2/actions/workflows/ci.yaml)
+[![CI](https://github.com/damien-robotsix/robotsix-mill/actions/workflows/ci.yaml/badge.svg)](https://github.com/damien-robotsix/robotsix-mill/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This repo follows the [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards).
