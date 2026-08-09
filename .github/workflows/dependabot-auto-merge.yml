@@ -2,79 +2,23 @@ name: Dependabot auto-merge
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
 
-permissions: {}
+permissions: {}  # no workflow-level default; the job grants its own
 
 jobs:
-  wait-for-ci:
-    if: github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'github_actions')
-    permissions:
-      checks: read
-    runs-on: ubuntu-latest
-    steps:
-      - name: Wait for required CI checks to pass
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const headSha = context.payload.pull_request.head.sha;
-            const maxAttempts = 30;
-            const delayMs = 20000;
-
-            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-              console.log(`Attempt ${attempt}/${maxAttempts}: checking CI status…`);
-
-              const { data: checkRuns } = await github.rest.checks.listForRef({
-                owner,
-                repo,
-                ref: headSha,
-              });
-
-              if (checkRuns.check_runs.length === 0) {
-                console.log('No check runs found yet, waiting…');
-                if (attempt < maxAttempts) {
-                  await new Promise(r => setTimeout(r, delayMs));
-                  continue;
-                }
-                core.setFailed('No CI checks were triggered within timeout');
-                return;
-              }
-
-              const pendingRuns = checkRuns.check_runs.filter(r => r.status !== 'completed');
-
-              if (pendingRuns.length > 0) {
-                const names = pendingRuns.map(r => r.name).join(', ');
-                console.log(`${pendingRuns.length} check(s) still running: ${names}`);
-                if (attempt < maxAttempts) {
-                  await new Promise(r => setTimeout(r, delayMs));
-                  continue;
-                }
-                core.setFailed('CI checks did not complete within timeout');
-                return;
-              }
-
-              // All checks completed — verify no failures
-              const failedRuns = checkRuns.check_runs.filter(
-                r => r.conclusion !== 'success' && r.conclusion !== 'neutral' && r.conclusion !== 'skipped'
-              );
-
-              if (failedRuns.length > 0) {
-                const details = failedRuns.map(r => `${r.name}: ${r.conclusion}`).join(', ');
-                core.setFailed(`CI check failures: ${details}`);
-                return;
-              }
-
-              console.log('All CI checks passed');
-              return;
-            }
-
-            core.setFailed('CI checks did not complete within timeout');
-
   auto-merge:
-    needs: wait-for-ci
-    if: github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'github_actions')
+    name: Dependabot auto-merge
+    # Two classes of PR merge themselves once their checks are green:
+    #   1. Dependabot dependency bumps.
+    #   2. release-please's release PRs — matched on the BRANCH PREFIX, never
+    #      on the bot identity. release-please runs as robotsix-mill[bot], and
+    #      that same identity authors mill's ticket PRs, which must keep going
+    #      through mill's own review and merge stages.
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]'
+      || startsWith(github.head_ref, 'release-please--branches--')
+    # contents: write and pull-requests: write needed to approve and merge PRs
     permissions:
-      contents: write
-      pull-requests: write
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@9ea2955d11f3d595a7a812feff99ae0eea8240c1  # main
+      contents: write  # approve and merge the PR
+      pull-requests: write  # label and merge the PR
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@e33f19f0657947c239ffcbaf3b47f149571e2bc1  # main
