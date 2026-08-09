@@ -7,3 +7,4 @@
 ^https://github\.com/koalaman/shellcheck/releases/download/v\$
 ^https://github\.com/hadolint/hadolint/releases/download/v\$
 ^https://www\.contributor-covenant\.org/resources$
+^https://www\.contributor-covenant\.org/version/3/0/$
