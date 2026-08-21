@@ -33,6 +33,18 @@ workspace-status:
     @echo "=== drift from repos.yaml (vcs export --exact vs committed repos.yaml) ==="
     vcs export --exact src | diff repos.yaml - || true
 
+# Run colcon build (devcontainer only)
+build:
+    colcon build --symlink-install --cmake-args -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+# Show ccache statistics (devcontainer only)
+ccache-stats:
+    ccache --show-stats
+
+# Reset ccache statistics (devcontainer only)
+ccache-reset:
+    ccache --zero-stats
+
 # Lint GitHub Actions workflow files with actionlint
 lint-actions:
     actionlint -color
