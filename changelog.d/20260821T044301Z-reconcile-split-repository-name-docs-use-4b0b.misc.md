@@ -1,0 +1,1 @@
+Restore canonical repository name `robotsix-mill-ros2` in README title, AGENT.md heading, ARCHITECTURE.md, and CONTRIBUTING.md prose, reverting the `robotsix-mill` rename from PR #136 that does not match the live GitHub repo name.

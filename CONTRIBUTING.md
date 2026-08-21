@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in improving **robotsix-mill**. This is a
+Thanks for your interest in improving **robotsix-mill-ros2**. This is a
 thin ROS2 workspace skeleton: the workspace sources are not committed
 here but declared in the [`vcs2l`](https://github.com/ros-infrastructure/vcs2l)
 manifest [`repos.yaml`](repos.yaml) and cloned into the git-ignored
