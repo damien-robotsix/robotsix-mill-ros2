@@ -1,6 +1,6 @@
 # Architecture
 
-This document explains the *design* of **robotsix-mill** — why
+This document explains the *design* of **robotsix-mill-ros2** — why
 the workspace is structured the way it is, and the patterns for
 extending it. It is deliberately a rationale-and-patterns document,
 not a how-to: for the step-by-step setup and contribution mechanics
