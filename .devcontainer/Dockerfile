@@ -28,7 +28,13 @@ RUN apt-get update && apt-get upgrade -y \
         build-essential \
         cmake \
         git \
+        ccache \
     && rm -rf /var/lib/apt/lists/*
+
+# Set up ccache to wrap compilers (symlink-based interception)
+ENV PATH=/usr/lib/ccache:$PATH
+ENV CCACHE_DIR=/home/$USERNAME/.ccache
+ENV CCACHE_MAXSIZE=10G
 
 RUN pip install --no-cache-dir vcs2l==1.1.7
 
