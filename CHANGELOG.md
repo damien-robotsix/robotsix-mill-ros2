@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add dedicated `Docker Lint` CI matrix entry for hadolint, reporting Dockerfile lint failures under a clear job name instead of burying them in the generic Pre-commit job.
 - Restrict stale workflow top-level permissions to `{}`; job-level permissions remain unchanged.
 - Add hadolint pre-commit hook for Dockerfile linting, a `lint-docker` just recipe, and fix the first `apt-get install` block in `.devcontainer/Dockerfile` to include `rm -rf /var/lib/apt/lists/*` cleanup.
+- Enable `agent_check` periodic workflow to validate agent/tool definitions (tool–prompt mismatches, registration completeness, prompt self-consistency, metadata correctness, memory-ledger coherence).
 - Enable `completeness_check` periodic workflow to validate repo manifest completeness (repos.yaml, pre-commit hooks, CI workflows, shell scripts)
 - Enable `copy_paste` periodic workflow (jscpd) for YAML/shell copy-paste detection across `.pre-commit-config.yaml`, `.robotsix-mill/config.yaml`, CI workflows, and issue templates.
 - Enable the `survey` periodic mill workflow
@@ -55,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Update AGENT.md and ARCHITECTURE.md to document all seven periodic workflow stubs (audit, changelog_autofill, completeness_check, copy_paste, health, repo_description_sync, survey)
+- Update AGENT.md and ARCHITECTURE.md to document all eight periodic workflow stubs (agent_check, audit, changelog_autofill, completeness_check, copy_paste, health, repo_description_sync, survey)
 - Bump yamllint pre-commit hook from v1.37.1 to v1.38.0
 - `README.md`: Added License badge (MIT) linking to the OSI license page.
 
