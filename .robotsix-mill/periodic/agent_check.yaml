@@ -1,0 +1,2 @@
+# Enables the built-in agent_check periodic workflow
+name: agent_check
