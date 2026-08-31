@@ -31,7 +31,7 @@ repos:
         exclude: ^\.lycheeignore$
         args: [--no-progress]
   - repo: https://github.com/shenxianpeng/hadolint-pre-commit
-    rev: v2.14.0.1
+    rev: v2.15.1.2
     hooks:
       - id: hadolint
         args: [--failure-threshold, error]
