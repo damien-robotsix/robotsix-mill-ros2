@@ -56,6 +56,14 @@ then run:
 This imports every repo listed in `repos.yaml` into `src/` and pulls
 updates for any already-cloned repos, so it is safe to re-run.
 
+If the script fails, see the [Troubleshooting](#troubleshooting) section:
+a missing `vcs` command is covered under
+[`vcs` command not found](#vcs-command-not-found-vcs2l-installation-issues),
+timeouts or DNS errors during the clone/pull under
+[Network errors during `vcs import`](#network-errors-during-vcs-import),
+and a `vcs import` that fails midway under
+[Recovering a partially updated workspace](#recovering-a-partially-updated-workspace).
+
 ## Verify the workspace
 
 Two `just` recipes help you detect workspace drift. Both are **dev-only**
@@ -73,6 +81,12 @@ aggregate:
 Use `just workspace-status` before running `./scripts/update_workspace.sh`
 to preview what will change, and `just verify-refs` to confirm that every
 declared ref still exists on the remote before attempting a pull.
+
+If `just verify-refs` reports a ref that does not resolve on its remote
+(`ERROR: <path>: ref "<version>" not found on remote <url>`), see
+[Branch ref not found](#branch-ref-not-found) in the Troubleshooting
+section for how to diagnose and correct the bad `version:` in
+`repos.yaml`.
 
 ## Troubleshooting
 
