@@ -74,6 +74,108 @@ Use `just workspace-status` before running `./scripts/update_workspace.sh`
 to preview what will change, and `just verify-refs` to confirm that every
 declared ref still exists on the remote before attempting a pull.
 
+## Troubleshooting
+
+### `vcs` command not found (vcs2l installation issues)
+
+`update_workspace.sh` prints `vcs2l not found — install it with: pip
+install vcs2l (or: sudo apt install python3-vcs2l)` and exits when it
+cannot bootstrap `vcs2l` automatically. Typical causes and fixes:
+
+- **Missing or unusable `pip`** — the script bootstraps with
+  `python3 -m pip install --user vcs2l`. Confirm the interpreter and pip
+  are usable (`python3 --version`, `python3 -m pip --version`), then
+  install manually with `pip install vcs2l` (or
+  `sudo apt install python3-vcs2l` on Debian/Ubuntu).
+- **`~/.local/bin` not on `PATH`** — a `--user` install places the
+  `vcs` binary in `~/.local/bin`, which many shells do not search. After
+  installing, run `command -v vcs`; if it is still missing, add
+  `~/.local/bin` to `PATH` or install system-wide.
+- **No write permission to `~/.local`** — the automatic `--user`
+  install fails with a permission error. Use a virtual environment
+  (`python3 -m venv`) or a system-wide install instead.
+
+A network-isolated environment cannot bootstrap `vcs2l` at all, and
+`vcs import` needs network regardless, so `src/` can only be populated
+where network access is available.
+
+### Network errors during `vcs import`
+
+`vcs import` clones every repository declared in `repos.yaml`; `vcs pull`
+then updates the ones already cloned into `src/`. Both steps require
+network.
+
+- **Network vs. manifest errors** — network failures look like timeouts
+  or DNS errors (`fatal: unable to access ... Failed to connect`,
+  `Could not resolve host`); manifest errors name a repository or ref
+  that does not exist (`Repository not found`, unknown-ref messages).
+- **Retry strategy** — the script is idempotent and safe to re-run:
+  `./scripts/update_workspace.sh`. Already-cloned repositories are
+  pulled, not re-cloned, so retries are cheap.
+- **Proxies and firewalls** — git honors the standard `http_proxy` and
+  `https_proxy` environment variables; export them when an egress proxy
+  is required. If a firewall blocks the protocol used in the `url:`
+  field, switch that entry in `repos.yaml` to a reachable protocol.
+- `just verify-refs` has the same network prerequisite — it runs
+  `git ls-remote` against every declared remote (see below).
+
+### Understanding workspace drift
+
+`just workspace-status` shows two things:
+
+- Raw `vcs status src` output: per-repository branch/ref and dirty-file
+  state.
+- A diff of `vcs export --exact src` against the committed `repos.yaml`,
+  which pinpoints exactly which repositories are checked out on a
+  different ref than declared.
+
+Drift happens because `version:` is a floating branch ref: downstream
+repositories move on their own when upstream pushes to the branch, and
+local edits inside a `src/` checkout also leave it off the declared ref.
+Drift simply means the live checkout no longer matches `repos.yaml`. To
+sync, re-run `./scripts/update_workspace.sh`; if a repository with local
+edits refuses the pull (git-pull semantics), commit or stash those edits
+first.
+
+### Branch ref not found
+
+- **Symptoms** — `vcs import` fails for a single repository with a
+  ref-not-found message; `just verify-refs` prints
+  `ERROR: <path>: ref "<version>" not found on remote <url>` and exits
+  non-zero.
+- **Cause** — the `version:` value in `repos.yaml` (a branch, tag, or
+  commit SHA) does not exist on the remote: a typo, a deleted branch, or
+  a ref that was never pushed.
+- **Debug** — run `just verify-refs` (requires network) to check every
+  declared ref, or `git ls-remote <url> <ref>` for a single repository.
+  Correct the `version:` in `repos.yaml`, then re-run
+  `./scripts/update_workspace.sh`.
+
+### Recovering a partially updated workspace
+
+If `vcs import` fails midway, `src/` is left partially populated. The
+directory is ephemeral — its contents are git-ignored, with only the
+empty `.gitkeep` placeholder tracked — so the clean recovery is to
+delete it and re-import:
+
+```sh
+rm -rf src
+./scripts/update_workspace.sh
+```
+
+The script recreates `src/`. If `git status` reports `src/.gitkeep` as
+deleted, restore the tracked placeholder with
+`git checkout -- src/.gitkeep`.
+
+### Which tool should I use?
+
+| Tool | Network | What it checks | When to use |
+| --- | --- | --- | --- |
+| `just verify-refs` | Required | Every `version:` ref in `repos.yaml` still resolves on its remote (`git ls-remote`) | Before updating, to catch a bad ref early; not usable in isolated/CI environments |
+| `just workspace-status` | Not needed | Local drift: `vcs status src` plus the diff of `vcs export --exact src` against `repos.yaml` | Anytime you want to preview what an update will change without touching the network |
+| `vcs status src` | Not needed | Raw per-repository output (branch/ref, dirty files) without comparison to `repos.yaml` | A quick low-level look; `just workspace-status` wraps it for drift |
+| `./scripts/update_workspace.sh` | Required | Clones and updates `src/` from `repos.yaml` (`vcs import` + `vcs pull`) | The actual populate/update step |
+
 ## Development container
 
 This repository includes a [development container](https://containers.dev/) configuration
