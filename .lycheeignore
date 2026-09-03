@@ -9,3 +9,7 @@
 ^https://www\.contributor-covenant\.org/resources$
 ^https://www\.contributor-covenant\.org/translations$
 ^https://www\.contributor-covenant\.org/version/3/0/$
+# docs.ros.org serves 403 to lychee's non-browser user-agent even for valid
+# pages (same bot-blocking as contributor-covenant.org above); the DCO link in
+# CONTRIBUTING.md is reachable in a browser.
+^https://docs\.ros\.org/en/rolling/The-ROS2-Project/Contributing/Developer-Guide\.html(#.*)?$
