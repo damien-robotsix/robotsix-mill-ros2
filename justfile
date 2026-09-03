@@ -5,13 +5,17 @@ check: lint-yaml lint-shell lint-spelling lint-markdown lint-docker validate-man
 check-all: check
     pre-commit run --all-files
 
+# Run the shell regression tests covering the README Troubleshooting scenarios (offline, no network)
+test:
+    ./tests/run_tests.sh
+
 # Lint all YAML files with yamllint
 lint-yaml:
     yamllint --strict .
 
 # Lint shell scripts with shellcheck
 lint-shell:
-    shellcheck scripts/update_workspace.sh scripts/verify_refs.sh
+    shellcheck scripts/update_workspace.sh scripts/verify_refs.sh tests/run_tests.sh
 
 # Check spelling across the repo with codespell
 lint-spelling:

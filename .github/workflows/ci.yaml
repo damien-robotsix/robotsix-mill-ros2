@@ -125,3 +125,19 @@ jobs:
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd  # v3.0.1
         with:
           extra_args: --all-files --verbose
+
+  tests:
+    permissions: {}
+    name: Regression Tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install just
+        run: sudo apt-get update && sudo apt-get install -y just
+      - name: Install PyYAML (required by scripts/verify_refs.sh)
+        run: pip install pyyaml==6.0.3
+      - name: Run regression tests (README Troubleshooting scenarios)
+        run: just test
