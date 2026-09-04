@@ -5,6 +5,20 @@ All notable changes to robotsix-mill are documented in this file.
 The format is adapted from [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.0 (2026-08-30)
+
+
+### Features
+
+* Adopt ccache volume, colcon build lifecycle, and lifecycle scripts in .devcontainer/ (20260820T194638Z-adopt-ccache-volume-colcon-build-lifecyc-fa88) ([#143](https://github.com/damien-robotsix/robotsix-mill-ros2/issues/143)) ([bbad621](https://github.com/damien-robotsix/robotsix-mill-ros2/commit/bbad6212eea4d5d92360380fb6f64390a4583826))
+* robotsix-mill-ros2: Enable agent_check periodic workflow (20260828T112230Z-robotsix-mill-ros2-enable-agent-check-pe-37c7) ([#145](https://github.com/damien-robotsix/robotsix-mill-ros2/issues/145)) ([b8977b3](https://github.com/damien-robotsix/robotsix-mill-ros2/commit/b8977b347502cf60b1dcaf6f060db9bcb45b47ea))
+* robotsix-mill-ros2: Enable triage_boilerplate periodic workflow (20260828T112230Z-robotsix-mill-ros2-enable-triage-boilerp-fe75) ([#146](https://github.com/damien-robotsix/robotsix-mill-ros2/issues/146)) ([868c4df](https://github.com/damien-robotsix/robotsix-mill-ros2/commit/868c4dfbea808d82c135a83f9d1267b8e7a71008))
+
+
+### Bug Fixes
+
+* Restore broken security advisory URL in .github/ISSUE_TEMPLATE/config.yml (20260809T183420Z-restore-broken-security-advisory-url-in-9975) ([#138](https://github.com/damien-robotsix/robotsix-mill-ros2/issues/138)) ([ca590eb](https://github.com/damien-robotsix/robotsix-mill-ros2/commit/ca590ebb947aa11f5da21223e5cb3d8f2860103b))
+
 ## [Unreleased]
 
 ### Added
