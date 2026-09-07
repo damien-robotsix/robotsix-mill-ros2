@@ -1,31 +1,13 @@
 # Security Policy
 
-## Supported Versions
-
-Only the `main` branch receives security fixes. No older versions or
-release branches are backported.
-
 ## Reporting a Vulnerability
+Please report security vulnerabilities privately by email to admin@robotsix.net.
+Do not open a public issue for security problems.
 
-Vulnerabilities must be reported privately via GitHub's "Report a
-vulnerability" feature under the Security tab. Public issues and pull
-requests discussing the vulnerability are prohibited.
+## Response Time
+This project is maintained by a single person and cannot guarantee a response
+time. Reports are handled on a best-effort basis.
 
-## What to Include
-
-A description of the vulnerability, its impact, reproduction steps, and
-optionally a suggested fix.
-
-## Response Timeline
-
-- Acknowledgment within 5 business days.
-- Initial severity assessment (critical/high/medium/low) within 10
-  business days.
-- A fix timeline is proposed after assessment. These are targets, not
-  guarantees.
-
-## Scope
-
-Only this repository's own scripts and CI configuration are covered.
-Vulnerabilities in the external repositories imported via `repos.yaml`
-should be reported to those respective projects.
+## Coordinated Disclosure
+This project follows coordinated disclosure: please allow a reasonable window
+to release a fix before any public disclosure.
