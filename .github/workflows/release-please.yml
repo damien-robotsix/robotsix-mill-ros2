@@ -4,7 +4,11 @@ name: Release Please
   push:
     branches: [main]
 
-permissions: read-all
+# Job-scoped below, not here: a caller-level read-all cannot grant the
+# reusable workflow the contents/pull-requests write it declares, and GitHub
+# records that as a startup_failure with no job and no log (red on every
+# push to main from 2026-08-30 to 2026-09-10).
+permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,6 +17,9 @@ concurrency:
 jobs:
   release-please:
     name: Release Please
+    permissions:
+      contents: write       # create the release commit, tag and GitHub Release
+      pull-requests: write  # open and update the release PR
     uses: damien-robotsix/robotsix-github-workflows/.github/workflows/release-please.yml@94d7adb43db9ddd7222ad25834231ac41314359b  # main
     with:
       app-id: ${{ vars.RELEASE_APP_ID }}
