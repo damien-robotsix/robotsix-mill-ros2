@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Damien Robotsix
+# SPDX-License-Identifier: MIT
 """Verify tool-version parity between .github/workflows/ci.yaml and
 .pre-commit-config.yaml.
 

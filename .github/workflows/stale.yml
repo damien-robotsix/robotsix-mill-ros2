@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Damien Robotsix
+# SPDX-License-Identifier: MIT
 ---
 # Automatically close stale issues and pull requests.
 # Both Navigation2 and MoveIt2 use a similar workflow.

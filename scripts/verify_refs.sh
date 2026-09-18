@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Damien Robotsix
+# SPDX-License-Identifier: MIT
 set -euo pipefail
 trap 'echo "verify_refs.sh: error on line ${LINENO} (exit $?): ${BASH_COMMAND}" >&2' ERR
 
