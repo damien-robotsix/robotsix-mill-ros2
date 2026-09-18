@@ -51,7 +51,10 @@ jobs:
           - name: Docker Lint
             recipe: lint-docker
             hadolint: true
-            version: "2.15.1.2"
+            # shenxianpeng/hadolint-pre-commit tags the hook with a trailing
+            # patch counter (rev v2.15.1.2 wraps hadolint 2.15.1); the CI job
+            # downloads the upstream hadolint binary, so pin the real version.
+            version: "2.15.1"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -99,7 +102,8 @@ jobs:
           version: "1.30.0"
           advanced-security: "false"
           annotations: "true"
-          args: "--deny=medium"
+          # zizmor >=1.28 renamed --deny to --min-severity (same threshold).
+          args: "--min-severity medium"
 
   pre-commit:
     permissions: {}

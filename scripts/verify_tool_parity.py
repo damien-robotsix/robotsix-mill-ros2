@@ -59,6 +59,22 @@ def load_ci_versions(workflow):
     return versions
 
 
+def normalize_hadolint(version):
+    """Map a shenxianpeng/hadolint-pre-commit hook rev to the upstream
+    hadolint binary version it wraps.
+
+    The hook repo tags each release with the hadolint version plus a
+    trailing patch counter (e.g. rev v2.15.1.2 wraps hadolint 2.15.1;
+    rev v2.14.0.1 wrapped hadolint 2.14.0). CI downloads the upstream
+    hadolint binary directly, so strip the hook's trailing counter before
+    comparing. Non-hadolint versions are returned unchanged.
+    """
+    parts = version.split(".")
+    if len(parts) > 3:
+        return ".".join(parts[:-1])
+    return version
+
+
 def load_pre_commit_versions(config):
     with open(config) as f:
         data = yaml.safe_load(f)
@@ -86,7 +102,9 @@ def main():
         return 0
     failed = False
     for tool in common:
-        if ci[tool] != pc[tool]:
+        ci_v = normalize_hadolint(ci[tool]) if tool == "hadolint" else ci[tool]
+        pc_v = normalize_hadolint(pc[tool]) if tool == "hadolint" else pc[tool]
+        if ci_v != pc_v:
             print(
                 f"VERSION DRIFT: {tool}: ci.yaml={ci[tool]} "
                 f"vs .pre-commit-config.yaml={pc[tool]}",
