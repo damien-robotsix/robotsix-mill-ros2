@@ -133,3 +133,19 @@ operation. Do not rely on network-dependent steps in CI.
 `.pre-commit-config.yaml`; failing hooks block CI.
 
 Run `pre-commit run --all-files` before pushing.
+
+## Rule: Bump CI tool pins and pre-commit hook `rev:`s in parity
+
+**Rationale:** CI enforces this parity via
+`scripts/verify_tool_parity.py`; bumping only one of the two files
+makes the version-parity job fail at PR time. This drift has silently
+recurred once already (zizmor 1.29.0 vs pre-commit v1.30.0, hadolint
+2.14.0 vs 2.15.1.2).
+
+When bumping a lint/scan tool's version, update BOTH the CI pin in
+`.github/workflows/ci.yaml` (lint matrix `version:` / zizmor `with:`)
+and the matching hook `rev:` in `.pre-commit-config.yaml` in the same
+change, then run `python3 scripts/verify_tool_parity.py` to confirm.
+Note the shenxianpeng/hadolint-pre-commit hook tag (`v2.15.1.2`) wraps
+upstream hadolint 2.15.1 and is not a binary release — pin CI to the
+upstream binary.
