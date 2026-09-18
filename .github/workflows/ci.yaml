@@ -51,7 +51,7 @@ jobs:
           - name: Docker Lint
             recipe: lint-docker
             hadolint: true
-            version: "2.14.0"
+            version: "2.15.1.2"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -96,7 +96,7 @@ jobs:
           persist-credentials: false
       - uses: zizmorcore/zizmor-action@70fb788f84895a7701f5643d103d587e460b5c99  # v0.6.3
         with:
-          version: "1.29.0"
+          version: "1.30.0"
           advanced-security: "false"
           annotations: "true"
           args: "--deny=medium"
@@ -125,6 +125,20 @@ jobs:
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd  # v3.0.1
         with:
           extra_args: --all-files --verbose
+
+  version-parity:
+    permissions: {}
+    name: Tool Version Parity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install PyYAML
+        run: pip install pyyaml==6.0.3
+      - name: Verify ci.yaml matches .pre-commit-config.yaml
+        run: python3 scripts/verify_tool_parity.py
 
   tests:
     permissions: {}
