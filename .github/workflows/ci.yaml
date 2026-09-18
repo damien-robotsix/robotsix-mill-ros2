@@ -103,7 +103,9 @@ jobs:
           advanced-security: "false"
           annotations: "true"
           # zizmor >=1.28 renamed --deny to --min-severity (same threshold).
-          args: "--min-severity medium"
+          # Use the = form so the value survives when the action passes args
+          # as a single un-split token (space-separated form errors out).
+          args: "--min-severity=medium"
 
   pre-commit:
     permissions: {}
