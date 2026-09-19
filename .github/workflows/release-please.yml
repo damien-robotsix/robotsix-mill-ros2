@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Damien Robotsix
+# SPDX-License-Identifier: MIT
 name: Release Please
 
 "on":
@@ -20,7 +22,7 @@ jobs:
     permissions:
       contents: write       # create the release commit, tag and GitHub Release
       pull-requests: write  # open and update the release PR
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/release-please.yml@1b60dfce159844a7e8cc245fd4090328c216ad34  # main
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/release-please.yml@0584b087d3ae384050ef06723d3f4e6e06d523da  # main
     with:
       app-id: ${{ vars.RELEASE_APP_ID }}
       sync-uv-lock: false
