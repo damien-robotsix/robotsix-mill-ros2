@@ -69,7 +69,7 @@ jobs:
       - name: Install shellcheck
         if: ${{ matrix.shellcheck }}
         run: |
-          curl -sSfL "https://github.com/koalaman/shellcheck/releases/download/v${{ matrix.version }}/shellcheck-v${{ matrix.version }}.linux.x86_64.tar.xz" \
+          curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/koalaman/shellcheck/releases/download/v${{ matrix.version }}/shellcheck-v${{ matrix.version }}.linux.x86_64.tar.xz" \
             -o shellcheck.tar.xz
           tar -xf shellcheck.tar.xz
           sudo mv "shellcheck-v${{ matrix.version }}/shellcheck" /usr/local/bin/
@@ -80,12 +80,12 @@ jobs:
       - name: Install actionlint
         if: ${{ matrix.actionlint }}
         run: |
-          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${{ matrix.version }}"
+          bash <(curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${{ matrix.version }}"
           sudo mv actionlint /usr/local/bin/
       - name: Install hadolint
         if: ${{ matrix.hadolint }}
         run: |
-          curl -sSfL "https://github.com/hadolint/hadolint/releases/download/v${{ matrix.version }}/hadolint-Linux-x86_64" \
+          curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/hadolint/hadolint/releases/download/v${{ matrix.version }}/hadolint-Linux-x86_64" \
             -o hadolint && chmod +x hadolint && sudo mv hadolint /usr/local/bin/
       - name: Run linter
         run: just ${{ matrix.recipe }}
