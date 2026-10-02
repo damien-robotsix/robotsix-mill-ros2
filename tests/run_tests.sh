@@ -83,18 +83,6 @@ assert_exists() {
   fi
 }
 
-assert_line_count() {
-  local label needle file expected actual
-  label="$1"
-  needle="$2"
-  file="$3"
-  expected="$4"
-  actual="$(grep -c -F -- "${needle}" "${file}" || true)"
-  if [ "${actual}" -ne "${expected}" ]; then
-    fail "${label}: expected ${expected} lines containing [${needle}]; got ${actual}: $(cat "${file}")"
-  fi
-}
-
 run_case() {
   local name before
   name="$1"
