@@ -289,6 +289,99 @@ EOF
   assert_err_contains "all-refs-pass" "All refs verified." "${case_err}"
 }
 
+# write_parity_ci <dir>: lay out a fake repo root containing a copy of
+# verify_tool_parity.py and a synthetic .github/workflows/ci.yaml carrying
+# every lint-matrix tool (plus the zizmor action version). Each test writes
+# its own .pre-commit-config.yaml alongside to control the compared set.
+write_parity_ci() {
+  local d
+  d="$1"
+  mkdir -p "${d}/scripts" "${d}/.github/workflows"
+  cp "${REPO_ROOT}/scripts/verify_tool_parity.py" "${d}/scripts/"
+  cat >"${d}/.github/workflows/ci.yaml" <<'EOF'
+jobs:
+  lint:
+    strategy:
+      matrix:
+        include:
+          - name: YAML Lint
+            version: "1.38.0"
+          - name: ShellCheck
+            version: "0.11.0"
+          - name: VCS Validate
+            version: "1.1.7"
+          - name: Codespell
+            version: "2.4.3"
+          - name: Markdown Lint
+            version: "0.49.1"
+          - name: Actionlint
+            version: "1.7.12"
+          - name: Docker Lint
+            version: "2.15.1"
+  zizmor:
+    steps:
+      - uses: zizmorcore/zizmor-action@deadbeef  # v0.6.4
+        with:
+          version: "1.30.0"
+EOF
+}
+
+# Scenario: load the committed ci.yaml / .pre-commit-config.yaml through the
+# script's own loaders and assert the set of tools it would actually compare
+# equals the expected shared set. If an upstream CI `name:` or hook `id:` is
+# renamed, its mapping lookup returns None, the tool drops out of `common`,
+# and this fails loudly instead of letting its drift go silently unchecked.
+# Computed from the loaders (not the pass/fail output) so it holds regardless
+# of whether versions are currently aligned.
+test_parity_all_tools_compared() {
+  local case_out case_err
+  case_out="${WORK_DIR}/parity-all-out"
+  case_err="${WORK_DIR}/parity-all-err"
+  run "${case_out}" "${case_err}" \
+    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; ci = v.load_ci_versions('${REPO_ROOT}/.github/workflows/ci.yaml'); pc = v.load_pre_commit_versions('${REPO_ROOT}/.pre-commit-config.yaml'); common = set(ci) & set(pc); expected = {'zizmor', 'hadolint', 'yamllint', 'shellcheck', 'actionlint', 'codespell', 'markdownlint'}; assert common == expected, 'compared set drifted from expected: %r' % (common ^ expected,); print('parity-set-ok')"
+  assert_status "parity-all-tools" 0 "${status}" "${case_err}"
+  assert_out_contains "parity-all-tools" "parity-set-ok" "${case_out}"
+}
+
+# Scenario: a tool's version differs between ci.yaml and the pre-commit hook.
+# The script must detect the drift and exit 1, naming the drifted tool.
+test_parity_drift_detected() {
+  local case_dir case_out case_err
+  case_dir="${WORK_DIR}/parity-drift"
+  case_out="${case_dir}/out"
+  case_err="${case_dir}/err"
+  write_parity_ci "${case_dir}"
+  cat >"${case_dir}/.pre-commit-config.yaml" <<'EOF'
+repos:
+  - repo: https://example.invalid/yamllint
+    rev: v1.37.0
+    hooks:
+      - id: yamllint
+  - repo: https://example.invalid/shellcheck
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+EOF
+  # shellcheck disable=SC2016  # $1 is expanded by the inner `bash -c`, not here
+  run "${case_out}" "${case_err}" \
+    bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py' _ "${case_dir}"
+  assert_status "parity-drift" 1 "${status}" "${case_err}"
+  assert_err_contains "parity-drift" "VERSION DRIFT: yamllint" "${case_err}"
+}
+
+# Scenario: normalize_hadolint() must strip the shenxianpeng hook's trailing
+# patch counter (v2.15.1.2 -> 2.15.1) while leaving ordinary versions alone,
+# so a matching hadolint pair is not falsely reported as drift.
+test_parity_normalize_hadolint() {
+  local case_out case_err
+  case_out="${WORK_DIR}/parity-normalize-out"
+  case_err="${WORK_DIR}/parity-normalize-err"
+  run "${case_out}" "${case_err}" \
+    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; assert v.normalize_hadolint('2.15.1.2') == '2.15.1', v.normalize_hadolint('2.15.1.2'); assert v.normalize_hadolint('2.14.0.1') == '2.14.0', v.normalize_hadolint('2.14.0.1'); assert v.normalize_hadolint('2.15.1') == '2.15.1', v.normalize_hadolint('2.15.1'); assert v.normalize_hadolint('1.30.0') == '1.30.0', v.normalize_hadolint('1.30.0'); print('normalize-hadolint-ok')"
+  assert_status "parity-normalize-hadolint" 0 "${status}" "${case_err}"
+  assert_out_contains "parity-normalize-hadolint" "normalize-hadolint-ok" "${case_out}"
+}
+
 main() {
   info "update_workspace.sh: vcs missing + uninstallable bootstrap"
   run_case "vcs-not-found" test_vcs_not_found
@@ -300,6 +393,12 @@ main() {
   run_case "stale-ref-detection" test_stale_ref_detection
   info "verify_refs.sh: all refs pass"
   run_case "all-refs-pass" test_all_refs_pass
+  info "verify_tool_parity.py: all expected tools are compared"
+  run_case "parity-all-tools-compared" test_parity_all_tools_compared
+  info "verify_tool_parity.py: version drift fails loudly"
+  run_case "parity-drift-detected" test_parity_drift_detected
+  info "verify_tool_parity.py: normalize_hadolint strips hook counter"
+  run_case "parity-normalize-hadolint" test_parity_normalize_hadolint
 
   printf '\n'
   if [ "${tests_failed}" -ne 0 ]; then
