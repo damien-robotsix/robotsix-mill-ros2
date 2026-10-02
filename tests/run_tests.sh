@@ -362,6 +362,7 @@ repos:
     hooks:
       - id: shellcheck
 EOF
+  # shellcheck disable=SC2016  # $1 is expanded by the inner `bash -c`, not here
   run "${case_out}" "${case_err}" \
     bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py' _ "${case_dir}"
   assert_status "parity-drift" 1 "${status}" "${case_err}"
