@@ -88,6 +88,33 @@ If `just verify-refs` reports a ref that does not resolve on its remote
 section for how to diagnose and correct the bad `version:` in
 `repos.yaml`.
 
+## Building the workspace
+
+Once the workspace is populated, build the ROS2 packages with:
+
+```sh
+just build
+```
+
+This runs `colcon build --symlink-install` with
+[ccache](https://ccache.dev/) compilation caching wired in
+(`-DCMAKE_C_COMPILER_LAUNCHER=ccache` /
+`-DCMAKE_CXX_COMPILER_LAUNCHER=ccache`). `ccache` is preinstalled in the
+[development container](#development-container); outside the devcontainer
+you can run `colcon build` directly (install `colcon` and, optionally,
+`ccache` first).
+
+Inspect the cache and reset its statistics with:
+
+```sh
+just ccache-stats   # Show ccache statistics
+just ccache-reset   # Zero the ccache statistics
+```
+
+Build artifacts land in the `build/`, `install/`, and `log/`
+directories, which are git-ignored and ephemeral — they can be safely
+deleted and rebuilt at any time.
+
 ## Troubleshooting
 
 ### `vcs` command not found (vcs2l installation issues)
