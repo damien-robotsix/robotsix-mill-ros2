@@ -1,5 +1,9 @@
 # robotsix-mill-ros2
 
+A minimal ROS2 workspace skeleton that declares its downstream package
+sources in a `vcs2l` manifest and clones them into `src/` on demand,
+keeping the workspace itself free of committed source code.
+
 [![CI](https://github.com/damien-robotsix/robotsix-mill-ros2/actions/workflows/ci.yaml/badge.svg)](https://github.com/damien-robotsix/robotsix-mill-ros2/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
