@@ -9,11 +9,6 @@ keeping the workspace itself free of committed source code.
 
 This repo follows the [robotsix stack standards](https://github.com/damien-robotsix/robotsix-standards).
 
-A minimal ROS2 workspace skeleton. The workspace sources are not
-committed to this repository — instead they are declared in a
-[`vcs2l`](https://github.com/ros-infrastructure/vcs2l) manifest and cloned
-into `src/` on demand.
-
 For the design rationale behind this skeleton — why `vcs2l` over
 submodules/worktrees/a monorepo, and how to organize and extend the
 workspace — see [`ARCHITECTURE.md`](ARCHITECTURE.md).
