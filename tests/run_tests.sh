@@ -382,6 +382,24 @@ test_parity_normalize_hadolint() {
   assert_out_contains "parity-normalize-hadolint" "normalize-hadolint-ok" "${case_out}"
 }
 
+# Scenario: ARCHITECTURE.md enumerates every periodic workflow stub. Each
+# `*.yaml` under .robotsix-mill/periodic/ must be referenced by its stem in
+# ARCHITECTURE.md, so the prose list cannot silently drift from the directory
+# when a stub is added or removed.
+test_periodic_stubs_documented() {
+  local stub stem missing
+  missing=""
+  for stub in "${REPO_ROOT}"/.robotsix-mill/periodic/*.yaml; do
+    stem="$(basename "${stub}" .yaml)"
+    if ! grep -q -F -- "${stem}" "${REPO_ROOT}/ARCHITECTURE.md"; then
+      missing="${missing} ${stem}"
+    fi
+  done
+  if [ -n "${missing}" ]; then
+    fail "periodic-stubs-documented: ARCHITECTURE.md does not reference stub(s):${missing}"
+  fi
+}
+
 main() {
   info "update_workspace.sh: vcs missing + uninstallable bootstrap"
   run_case "vcs-not-found" test_vcs_not_found
@@ -399,6 +417,8 @@ main() {
   run_case "parity-drift-detected" test_parity_drift_detected
   info "verify_tool_parity.py: normalize_hadolint strips hook counter"
   run_case "parity-normalize-hadolint" test_parity_normalize_hadolint
+  info "ARCHITECTURE.md: every periodic stub is documented"
+  run_case "periodic-stubs-documented" test_periodic_stubs_documented
 
   printf '\n'
   if [ "${tests_failed}" -ne 0 ]; then
