@@ -154,7 +154,7 @@ The same checks are mirrored for the robotsix-mill tooling in
 [`.robotsix-mill/config.yaml`](.robotsix-mill/config.yaml), which
 declares `languages: [shell]`, a `test_command` running
 `yamllint --strict . && python3 -m vcs2l.commands.vcs validate --input
-repos.yaml`, and `extra_sandbox_packages: [pip:yamllint, pip:vcs2l]`.
+repos.yaml`, and `extra_sandbox_packages: [pip:yamllint, pip:vcs2l==1.1.7]`.
 The `.robotsix-mill/periodic/` directory holds built-in workflow stubs
 for eight periodic (scheduled) workflows:
 [`agent_check`](.robotsix-mill/periodic/agent_check.yaml),

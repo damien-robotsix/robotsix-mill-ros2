@@ -38,7 +38,7 @@ colcon build outputs (`build/`, `install/`, `log/`) are git-ignored too.
   ```
 
   If the `vcs` command is missing, `./scripts/update_workspace.sh` will
-  attempt to install it automatically (via `pip install --user vcs2l`).
+  attempt to install it automatically (via `pip install --user vcs2l==1.1.7`).
   A network connection is required both for that bootstrap and for the
   subsequent clone/import step, so a network-isolated environment cannot
   populate the workspace even after `vcs2l` is installed.
@@ -119,11 +119,11 @@ deleted and rebuilt at any time.
 ### `vcs` command not found (vcs2l installation issues)
 
 `update_workspace.sh` prints `vcs2l not found — install it with: pip
-install vcs2l (or: sudo apt install python3-vcs2l)` and exits when it
+install vcs2l==1.1.7 (or: sudo apt install python3-vcs2l)` and exits when it
 cannot bootstrap `vcs2l` automatically. Typical causes and fixes:
 
 - **Missing or unusable `pip`** — the script bootstraps with
-  `python3 -m pip install --user vcs2l`. Confirm the interpreter and pip
+  `python3 -m pip install --user vcs2l==1.1.7`. Confirm the interpreter and pip
   are usable (`python3 --version`, `python3 -m pip --version`), then
   install manually with `pip install vcs2l` (or
   `sudo apt install python3-vcs2l` on Debian/Ubuntu).

@@ -7,4 +7,4 @@ test_command: >-
   python3 -m yamllint --strict . &&
   python3 -m vcs2l.commands.vcs validate --input repos.yaml
 # Tools the test_command imports (pip --user); mirrors CI's pip installs.
-extra_sandbox_packages: ["pip:yamllint", "pip:vcs2l"]
+extra_sandbox_packages: ["pip:yamllint", "pip:vcs2l==1.1.7"]
