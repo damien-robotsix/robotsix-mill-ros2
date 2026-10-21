@@ -59,6 +59,10 @@ repos:
     hooks:
       - id: markdownlint
         args: [--config, .markdownlint.json]
+        # CHANGELOG.md is release-please-generated; its asterisk bullets and
+        # double blank lines conflict with MD004/MD012. Matches the
+        # .markdownlintignore entry used by the CI `lint-markdown` recipe.
+        exclude: ^CHANGELOG\.md$
   - repo: https://github.com/fsfe/reuse-tool
     rev: v6.2.0
     hooks:
