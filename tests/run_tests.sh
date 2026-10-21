@@ -400,6 +400,111 @@ test_periodic_stubs_documented() {
   fi
 }
 
+# The four files that each pin vcs2l (relative to a repository root). They
+# must all agree on one version so the local bootstrap, the mill sandbox, the
+# devcontainer and CI cannot run different vcs2l releases.
+VCS2L_PIN_SITES=(
+  ".github/workflows/ci.yaml"
+  ".devcontainer/Dockerfile"
+  "scripts/update_workspace.sh"
+  ".robotsix-mill/config.yaml"
+)
+
+# check_vcs2l_parity <root>: print every vcs2l version pinned across
+# VCS2L_PIN_SITES under <root> (plus the ci.yaml lint-matrix `version:` for
+# the `pip: vcs2l` entry) and return 1 when a site carries no pin or when
+# the sites disagree.
+check_vcs2l_parity() {
+  local root site versions matrix rc
+  root="$1"
+  rc=0
+  versions=""
+  for site in "${VCS2L_PIN_SITES[@]}"; do
+    local found
+    found="$(grep -o -E 'vcs2l==[0-9][0-9A-Za-z.]*' "${root}/${site}" | sed 's/^vcs2l==//' || true)"
+    if [ -z "${found}" ]; then
+      echo "vcs2l not pinned (vcs2l==<version>) in ${site}" >&2
+      rc=1
+      continue
+    fi
+    while IFS= read -r v; do
+      echo "${site}: ${v}"
+      versions="${versions}${v}"$'\n'
+    done <<<"${found}"
+  done
+  # The ci.yaml lint matrix pins vcs2l via a separate `version:` key on the
+  # line following `pip: vcs2l`.
+  matrix="$(awk '/pip: vcs2l[[:space:]]*$/ { grab = 1; next }
+    grab && /version:/ { gsub(/[^0-9A-Za-z.]/, "", $2); print $2; exit }' \
+    "${root}/.github/workflows/ci.yaml")"
+  if [ -z "${matrix}" ]; then
+    echo "vcs2l lint-matrix version not found in .github/workflows/ci.yaml" >&2
+    rc=1
+  else
+    echo ".github/workflows/ci.yaml (matrix): ${matrix}"
+    versions="${versions}${matrix}"$'\n'
+  fi
+  if [ "$(printf '%s' "${versions}" | sort -u | grep -c .)" -gt 1 ]; then
+    echo "VERSION DRIFT: vcs2l ($(printf '%s' "${versions}" | sort -u | tr '\n' ' '))" >&2
+    rc=1
+  fi
+  return "${rc}"
+}
+
+# Scenario: vcs2l is pinned to the same version in ci.yaml, the devcontainer
+# Dockerfile, update_workspace.sh and .robotsix-mill/config.yaml, and the
+# parity check fails when any single site is bumped (or unpinned) alone.
+test_vcs2l_version_parity() {
+  local case_dir case_out case_err site other current
+  case_dir="${WORK_DIR}/vcs2l-parity"
+  case_out="${case_dir}/out"
+  case_err="${case_dir}/err"
+  mkdir -p "${case_dir}"
+
+  run "${case_out}" "${case_err}" check_vcs2l_parity "${REPO_ROOT}"
+  assert_status "vcs2l-parity (repo)" 0 "${status}" "${case_err}"
+  current="$(head -n 1 "${case_out}" | sed 's/^.*: //')"
+  if [ -z "${current}" ]; then
+    fail "vcs2l-parity: could not determine the current vcs2l pin"
+    return
+  fi
+
+  for site in "${VCS2L_PIN_SITES[@]}"; do
+    local tree
+    tree="${case_dir}/bump-$(basename "${site}")"
+    for other in "${VCS2L_PIN_SITES[@]}"; do
+      mkdir -p "$(dirname "${tree}/${other}")"
+      cp "${REPO_ROOT}/${other}" "${tree}/${other}"
+    done
+    sed -i "s/vcs2l==${current}/vcs2l==999.0.0/g" "${tree}/${site}"
+    run "${case_out}" "${case_err}" check_vcs2l_parity "${tree}"
+    assert_status "vcs2l-parity (bump ${site})" 1 "${status}" "${case_err}"
+    assert_err_contains "vcs2l-parity (bump ${site})" "VERSION DRIFT: vcs2l" "${case_err}"
+
+    tree="${case_dir}/unpin-$(basename "${site}")"
+    for other in "${VCS2L_PIN_SITES[@]}"; do
+      mkdir -p "$(dirname "${tree}/${other}")"
+      cp "${REPO_ROOT}/${other}" "${tree}/${other}"
+    done
+    sed -i "s/vcs2l==${current}/vcs2l/g" "${tree}/${site}"
+    run "${case_out}" "${case_err}" check_vcs2l_parity "${tree}"
+    assert_status "vcs2l-parity (unpin ${site})" 1 "${status}" "${case_err}"
+    assert_err_contains "vcs2l-parity (unpin ${site})" "vcs2l not pinned" "${case_err}"
+  done
+
+  # Bumping only the ci.yaml lint-matrix `version:` must also be caught.
+  local tree
+  tree="${case_dir}/bump-matrix"
+  for other in "${VCS2L_PIN_SITES[@]}"; do
+    mkdir -p "$(dirname "${tree}/${other}")"
+    cp "${REPO_ROOT}/${other}" "${tree}/${other}"
+  done
+  sed -i "/pip: vcs2l[[:space:]]*\$/{n;s/\"${current}\"/\"999.0.0\"/}" "${tree}/.github/workflows/ci.yaml"
+  run "${case_out}" "${case_err}" check_vcs2l_parity "${tree}"
+  assert_status "vcs2l-parity (bump ci matrix)" 1 "${status}" "${case_err}"
+  assert_err_contains "vcs2l-parity (bump ci matrix)" "VERSION DRIFT: vcs2l" "${case_err}"
+}
+
 main() {
   info "update_workspace.sh: vcs missing + uninstallable bootstrap"
   run_case "vcs-not-found" test_vcs_not_found
@@ -419,6 +524,8 @@ main() {
   run_case "parity-normalize-hadolint" test_parity_normalize_hadolint
   info "ARCHITECTURE.md: every periodic stub is documented"
   run_case "periodic-stubs-documented" test_periodic_stubs_documented
+  info "vcs2l: version pinned consistently across CI, devcontainer, script, mill config"
+  run_case "vcs2l-version-parity" test_vcs2l_version_parity
 
   printf '\n'
   if [ "${tests_failed}" -ne 0 ]; then
