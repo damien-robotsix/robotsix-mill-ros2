@@ -41,9 +41,12 @@ jobs:
             author=$(git log -1 --format='%ae' "$commit")
             subject=$(git log -1 --format='%s' "$commit")
 
-            # Exempt robotsix.local authors
+            # Exempt robotsix.local authors and GitHub App bots
+            # (release-please, dependabot). Bot commits are machine-generated
+            # and cannot carry a human Signed-off-by trailer; their author is
+            # of the form <id>+<app>[bot]@users.noreply.github.com.
             case "$author" in
-              *@robotsix.local)
+              *@robotsix.local | *'[bot]'@users.noreply.github.com)
                 echo "OK (exempt): $commit $subject ($author)"
                 continue
                 ;;
