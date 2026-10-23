@@ -149,3 +149,22 @@ change, then run `python3 scripts/verify_tool_parity.py` to confirm.
 Note the shenxianpeng/hadolint-pre-commit hook tag (`v2.15.1.2`) wraps
 upstream hadolint 2.15.1 and is not a binary release — pin CI to the
 upstream binary.
+
+## Rule: Triage lychee 403s via `.lycheeignore`, fix 404s at source
+
+**Rationale:** Some hosts (contributor-covenant.org, docs.ros.org)
+return HTTP 403 to lychee's non-browser user-agent even for valid
+pages. These `CI failure: Link Check on main` (or pre-commit lychee)
+tickets recur and always take the same one-line fix, so they need no
+refine round-trip.
+
+- **403 on a URL that works in a browser** (or on a known bot-blocking
+  host): add an **anchored** regex (`^https://host/path$`, with
+  `(#.*)?` before `$` if the link uses fragments) to `.lycheeignore`,
+  under a `#` comment naming the host and stating it returns 403 to
+  lychee's user-agent. Never ignore a whole domain, and do not edit or
+  remove the link in the docs.
+- **404**: the link is really broken. First check whether a sibling
+  ticket already fixed it (if so, close as no-change-needed), otherwise
+  fix the link at its source.
+- Never edit `CHANGELOG.md` for either case — release-please owns it.
