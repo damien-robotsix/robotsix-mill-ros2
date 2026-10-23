@@ -9,10 +9,15 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dco:
+    name: DCO
     permissions:
-      contents: read
+      contents: read  # check out the PR commits to inspect their trailers
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
@@ -22,11 +27,11 @@ jobs:
           fetch-depth: 0
       - name: Check DCO
         shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
-
-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
-          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
 
           echo "Checking DCO for commits ${BASE_SHA}..${HEAD_SHA}"
 

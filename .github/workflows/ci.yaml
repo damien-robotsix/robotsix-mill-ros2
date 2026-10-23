@@ -10,7 +10,7 @@ name: CI
   pull_request:
     branches: [main]
 
-permissions: read-all
+permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -65,30 +65,44 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y just
       - name: Install pip tool
         if: ${{ matrix.pip }}
-        run: pip install ${{ matrix.pip }}==${{ matrix.version }}
+        env:
+          TOOL: ${{ matrix.pip }}
+          VERSION: ${{ matrix.version }}
+        run: pip install "${TOOL}==${VERSION}"
       - name: Install shellcheck
         if: ${{ matrix.shellcheck }}
+        env:
+          VERSION: ${{ matrix.version }}
         run: |
-          curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/koalaman/shellcheck/releases/download/v${{ matrix.version }}/shellcheck-v${{ matrix.version }}.linux.x86_64.tar.xz" \
+          curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/koalaman/shellcheck/releases/download/v${VERSION}/shellcheck-v${VERSION}.linux.x86_64.tar.xz" \
             -o shellcheck.tar.xz
           tar -xf shellcheck.tar.xz
-          sudo mv "shellcheck-v${{ matrix.version }}/shellcheck" /usr/local/bin/
-          rm -rf shellcheck.tar.xz "shellcheck-v${{ matrix.version }}"
+          sudo mv "shellcheck-v${VERSION}/shellcheck" /usr/local/bin/
+          rm -rf shellcheck.tar.xz "shellcheck-v${VERSION}"
       - name: Install npm tool
         if: ${{ matrix.npm }}
-        run: sudo npm install -g ${{ matrix.npm }}@${{ matrix.version }}
+        env:
+          TOOL: ${{ matrix.npm }}
+          VERSION: ${{ matrix.version }}
+        run: sudo npm install -g "${TOOL}@${VERSION}"
       - name: Install actionlint
         if: ${{ matrix.actionlint }}
+        env:
+          VERSION: ${{ matrix.version }}
         run: |
-          bash <(curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${{ matrix.version }}"
+          bash <(curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${VERSION}"
           sudo mv actionlint /usr/local/bin/
       - name: Install hadolint
         if: ${{ matrix.hadolint }}
+        env:
+          VERSION: ${{ matrix.version }}
         run: |
-          curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/hadolint/hadolint/releases/download/v${{ matrix.version }}/hadolint-Linux-x86_64" \
+          curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/hadolint/hadolint/releases/download/v${VERSION}/hadolint-Linux-x86_64" \
             -o hadolint && chmod +x hadolint && sudo mv hadolint /usr/local/bin/
       - name: Run linter
-        run: just ${{ matrix.recipe }}
+        env:
+          RECIPE: ${{ matrix.recipe }}
+        run: just "${RECIPE}"
 
   zizmor:
     permissions: {}
