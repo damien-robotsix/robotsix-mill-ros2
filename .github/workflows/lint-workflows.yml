@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: 2026 Damien Robotsix
+# SPDX-License-Identifier: MIT
+name: Lint workflows
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+
+# Job-scoped below: a caller-level grant cannot exceed what the job allows,
+# and the reusable workflow only needs read access to check out the repo.
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-workflows:
+    name: Lint workflows
+    permissions:
+      contents: read  # check out the workflow files to lint them
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/lint-workflows.yml@427d0bbb36903abd6b96372c14b81c0bbd810b3b  # v1.0.4
+    with:
+      run-actionlint: true
+      run-zizmor: true

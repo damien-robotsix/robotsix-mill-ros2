@@ -10,10 +10,15 @@ name: Link Check
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lychee:
+    name: Link check
     permissions:
-      contents: read
+      contents: read  # check out the Markdown files to scan
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
