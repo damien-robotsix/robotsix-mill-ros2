@@ -24,7 +24,7 @@ jobs:
     name: Lint workflows
     permissions:
       contents: read  # check out the workflow files to lint them
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/lint-workflows.yml@427d0bbb36903abd6b96372c14b81c0bbd810b3b  # v1.0.4
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/lint-workflows.yml@a123d5f5386a32d171ef189b6d2a58bab5c7708f  # v1.0.5
     with:
       run-actionlint: true
       run-zizmor: true
