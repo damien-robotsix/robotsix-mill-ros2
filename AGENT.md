@@ -14,7 +14,7 @@ that declares which downstream repositories to clone and from where.
 ├── scripts/update_workspace.sh   # runs `vcs import` + `vcs pull` from repos.yaml
 ├── src/                          # ephemeral checkout (git-ignored)
 ├── .robotsix-mill/config.yaml    # robotsix-mill test gate (yamllint + vcs validate)
-├── .github/workflows/ci.yaml     # CI: yamllint, shellcheck, vcs validate, actionlint, zizmor, codespell
+├── .github/workflows/ci.yaml     # CI: yamllint, shellcheck, vcs validate, actionlint, codespell
 ├── .robotsix-mill/periodic/      # periodic workflow stubs: agent_check, audit, completeness_check, copy_paste, health, repo_description_sync, survey
 ├── .pre-commit-config.yaml       # pre-commit hooks
 ├── ARCHITECTURE.md               # design rationale
@@ -143,12 +143,14 @@ recurred once already (zizmor 1.29.0 vs pre-commit v1.30.0, hadolint
 2.14.0 vs 2.15.1.2).
 
 When bumping a lint/scan tool's version, update BOTH the CI pin in
-`.github/workflows/ci.yaml` (lint matrix `version:` / zizmor `with:`)
+`.github/workflows/ci.yaml` (lint matrix `version:`)
 and the matching hook `rev:` in `.pre-commit-config.yaml` in the same
 change, then run `python3 scripts/verify_tool_parity.py` to confirm.
 Note the shenxianpeng/hadolint-pre-commit hook tag (`v2.15.1.2`) wraps
 upstream hadolint 2.15.1 and is not a binary release — pin CI to the
-upstream binary.
+upstream binary. zizmor is no longer parity-checked: CI runs it only
+through the fleet-managed reusable `lint-workflows.yml` (which owns its
+version), so Dependabot can bump the zizmor hook `rev:` on its own.
 
 ## Rule: Triage lychee 403s via `.lycheeignore`, fix 404s at source
 

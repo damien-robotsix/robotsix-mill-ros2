@@ -291,7 +291,7 @@ EOF
 
 # write_parity_ci <dir>: lay out a fake repo root containing a copy of
 # verify_tool_parity.py and a synthetic .github/workflows/ci.yaml carrying
-# every lint-matrix tool (plus the zizmor action version). Each test writes
+# every lint-matrix tool. Each test writes
 # its own .pre-commit-config.yaml alongside to control the compared set.
 write_parity_ci() {
   local d
@@ -318,11 +318,6 @@ jobs:
             version: "1.7.12"
           - name: Docker Lint
             version: "2.15.1"
-  zizmor:
-    steps:
-      - uses: zizmorcore/zizmor-action@deadbeef  # v0.6.4
-        with:
-          version: "1.30.0"
 EOF
 }
 
@@ -338,7 +333,7 @@ test_parity_all_tools_compared() {
   case_out="${WORK_DIR}/parity-all-out"
   case_err="${WORK_DIR}/parity-all-err"
   run "${case_out}" "${case_err}" \
-    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; ci = v.load_ci_versions('${REPO_ROOT}/.github/workflows/ci.yaml'); pc = v.load_pre_commit_versions('${REPO_ROOT}/.pre-commit-config.yaml'); common = set(ci) & set(pc); expected = {'zizmor', 'hadolint', 'yamllint', 'shellcheck', 'actionlint', 'codespell', 'markdownlint'}; assert common == expected, 'compared set drifted from expected: %r' % (common ^ expected,); print('parity-set-ok')"
+    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; ci = v.load_ci_versions('${REPO_ROOT}/.github/workflows/ci.yaml'); pc = v.load_pre_commit_versions('${REPO_ROOT}/.pre-commit-config.yaml'); common = set(ci) & set(pc); expected = {'hadolint', 'yamllint', 'shellcheck', 'actionlint', 'codespell', 'markdownlint'}; assert common == expected, 'compared set drifted from expected: %r' % (common ^ expected,); print('parity-set-ok')"
   assert_status "parity-all-tools" 0 "${status}" "${case_err}"
   assert_out_contains "parity-all-tools" "parity-set-ok" "${case_out}"
 }
