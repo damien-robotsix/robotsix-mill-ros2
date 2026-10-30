@@ -5,14 +5,15 @@
 .pre-commit-config.yaml.
 
 The same lint/scan tools are pinned by exact version in two places: the CI
-workflow (matrix `version:` values and the zizmor action `with:` block) and
-the pre-commit hooks (`rev:` tags). These must not drift, otherwise CI and
+workflow (lint-matrix `version:` values) and the pre-commit hooks (`rev:` tags). These must not drift, otherwise CI and
 local pre-commit can disagree on a finding. This script fails the build when
 a tool present in both files has differing versions, so a one-off alignment
 cannot silently recur.
 
 Tools that only appear in one file (e.g. vcs2l, which is a local hook with
-no `rev:`) are intentionally not compared.
+no `rev:`, or zizmor, which CI runs via the fleet-managed reusable
+lint-workflows.yml rather than a pinned ci.yaml job) are intentionally not
+compared.
 """
 
 import sys
@@ -36,7 +37,6 @@ HOOK_TO_TOOL = {
     "hadolint": "hadolint",
     "actionlint-docker": "actionlint",
     "yamllint": "yamllint",
-    "zizmor": "zizmor",
     "codespell": "codespell",
     "markdownlint": "markdownlint",
 }
@@ -53,11 +53,6 @@ def load_ci_versions(workflow):
         tool = CI_NAME_TO_TOOL.get(entry.get("name", ""))
         if tool and entry.get("version"):
             versions[tool] = str(entry["version"])
-    # The zizmor job pins its version in the action `with:` block.
-    zizmor = jobs.get("zizmor", {})
-    for step in zizmor.get("steps", []):
-        if step.get("uses", "").startswith("zizmorcore/zizmor-action"):
-            versions["zizmor"] = str(step["with"]["version"])
     return versions
 
 
