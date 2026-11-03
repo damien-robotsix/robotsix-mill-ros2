@@ -1,0 +1,2 @@
+# Enables the built-in pin_bump periodic workflow
+name: pin_bump
