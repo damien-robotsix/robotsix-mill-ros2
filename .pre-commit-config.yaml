@@ -14,10 +14,12 @@ repos:
     hooks:
       - id: shellcheck
   - repo: https://github.com/lycheeverse/lychee
-    rev: v0.15.1
+    rev: lychee-v0.24.2
     hooks:
-      - id: lychee
-        language: docker
+      # lychee-docker runs the prebuilt lycheeverse/lychee image
+      # (language: docker_image); the old `language: docker` hook built
+      # lychee from its Dockerfile, which no longer builds.
+      - id: lychee-docker
         types: [file]
         # .lycheeignore holds URL *patterns*, not links. Scanning it makes
         # lychee harvest its own exclusion regexes as if they were links: a
