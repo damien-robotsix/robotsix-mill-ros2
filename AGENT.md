@@ -134,22 +134,26 @@ operation. Do not rely on network-dependent steps in CI.
 
 Run `pre-commit run --all-files` before pushing.
 
-## Rule: Bump CI tool pins and pre-commit hook `rev:`s in parity
+## Rule: `.pre-commit-config.yaml` is the single source of lint tool versions
 
-**Rationale:** CI enforces this parity via
-`scripts/verify_tool_parity.py`; bumping only one of the two files
-makes the version-parity job fail at PR time. This drift has silently
-recurred once already (zizmor 1.29.0 vs pre-commit v1.30.0, hadolint
-2.14.0 vs 2.15.1.2).
+**Rationale:** Pinning the same tool in two files drifted repeatedly
+(zizmor 1.29.0 vs pre-commit v1.30.0, hadolint 2.14.0 vs 2.15.1.2,
+markdownlint 0.49.1 vs 0.50.0), because Dependabot bumps hook `rev:`s
+but nothing bumped the matching ci.yaml pins.
 
-When bumping a lint/scan tool's version, update BOTH the CI pin in
-`.github/workflows/ci.yaml` (lint matrix `version:`)
-and the matching hook `rev:` in `.pre-commit-config.yaml` in the same
-change, then run `python3 scripts/verify_tool_parity.py` to confirm.
-Note the shenxianpeng/hadolint-pre-commit hook tag (`v2.15.1.2`) wraps
-upstream hadolint 2.15.1 and is not a binary release — pin CI to the
-upstream binary. zizmor is no longer parity-checked: CI runs it only
-through the fleet-managed reusable `lint-workflows.yml` (which owns its
+When bumping a lint/scan tool's version, change only the hook `rev:`
+in `.pre-commit-config.yaml` (Dependabot does this on its own). The
+`.github/workflows/ci.yaml` lint matrix names those tools with a
+`tool:` key rather than a `version:`. Its first step installs the
+version printed by `python3 scripts/verify_tool_parity.py --resolve <tool>`.
+That is the hook `rev:` with the `v` prefix stripped. For hadolint,
+the trailing counter of the shenxianpeng/hadolint-pre-commit tag is
+also dropped (`v2.15.1.2` → upstream binary 2.15.1). Do not
+re-add a `version:` pin for a tool that has a pinned hook. Only tools
+with no pinned hook (vcs2l, a local hook) keep a matrix `version:`.
+Run `python3 scripts/verify_tool_parity.py` with no arguments to
+self-check that every `tool:` entry resolves. zizmor is not in the
+lint matrix at all: CI runs it only through the fleet-managed reusable `lint-workflows.yml` (which owns its
 version), so Dependabot can bump the zizmor hook `rev:` on its own.
 
 ## Rule: Triage lychee 403s via `.lycheeignore`, fix 404s at source

@@ -25,15 +25,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Entries with `tool:` install the version pinned by the matching
+        # hook `rev:` in .pre-commit-config.yaml (the single source of truth;
+        # see scripts/verify_tool_parity.py --resolve), so a Dependabot
+        # pre-commit bump needs no edit here. `version:` is only for tools
+        # with no pinned hook (vcs2l is a local hook).
         include:
           - name: YAML Lint
             recipe: lint-yaml
             pip: yamllint
-            version: "1.38.0"
+            tool: yamllint
           - name: ShellCheck
             recipe: lint-shell
             shellcheck: true
-            version: "0.11.0"
+            tool: shellcheck
           - name: VCS Validate
             recipe: validate-manifest
             pip: vcs2l
@@ -41,38 +46,52 @@ jobs:
           - name: Codespell
             recipe: lint-spelling
             pip: codespell
-            version: "2.4.3"
+            tool: codespell
           - name: Markdown Lint
             recipe: lint-markdown
             npm: markdownlint-cli
-            version: "0.49.1"
+            tool: markdownlint
           - name: Actionlint
             recipe: lint-actions
             actionlint: true
-            version: "1.7.12"
+            tool: actionlint
           - name: Docker Lint
             recipe: lint-docker
             hadolint: true
             # shenxianpeng/hadolint-pre-commit tags the hook with a trailing
-            # patch counter (rev v2.15.1.2 wraps hadolint 2.15.1); the CI job
-            # downloads the upstream hadolint binary, so pin the real version.
-            version: "2.15.1"
+            # patch counter (rev v2.15.1.2 wraps hadolint 2.15.1); --resolve
+            # strips it so CI downloads the real upstream hadolint binary.
+            tool: hadolint
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
+      - name: Resolve tool version
+        id: version
+        env:
+          TOOL: ${{ matrix.tool }}
+          PINNED: ${{ matrix.version }}
+        run: |
+          if [ -n "${TOOL}" ]; then
+            pip install pyyaml==6.0.3
+            resolved="$(python3 scripts/verify_tool_parity.py --resolve "${TOOL}")"
+          else
+            resolved="${PINNED}"
+          fi
+          echo "Using version ${resolved}"
+          echo "version=${resolved}" >> "${GITHUB_OUTPUT}"
       - name: Install just
         run: sudo apt-get update && sudo apt-get install -y just
       - name: Install pip tool
         if: ${{ matrix.pip }}
         env:
           TOOL: ${{ matrix.pip }}
-          VERSION: ${{ matrix.version }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: pip install "${TOOL}==${VERSION}"
       - name: Install shellcheck
         if: ${{ matrix.shellcheck }}
         env:
-          VERSION: ${{ matrix.version }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/koalaman/shellcheck/releases/download/v${VERSION}/shellcheck-v${VERSION}.linux.x86_64.tar.xz" \
             -o shellcheck.tar.xz
@@ -83,19 +102,19 @@ jobs:
         if: ${{ matrix.npm }}
         env:
           TOOL: ${{ matrix.npm }}
-          VERSION: ${{ matrix.version }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: sudo npm install -g "${TOOL}@${VERSION}"
       - name: Install actionlint
         if: ${{ matrix.actionlint }}
         env:
-          VERSION: ${{ matrix.version }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           bash <(curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${VERSION}"
           sudo mv actionlint /usr/local/bin/
       - name: Install hadolint
         if: ${{ matrix.hadolint }}
         env:
-          VERSION: ${{ matrix.version }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           curl -sSfL --retry 3 --retry-delay 2 --retry-all-errors "https://github.com/hadolint/hadolint/releases/download/v${VERSION}/hadolint-Linux-x86_64" \
             -o hadolint && chmod +x hadolint && sudo mv hadolint /usr/local/bin/
@@ -154,7 +173,7 @@ jobs:
           persist-credentials: false
       - name: Install PyYAML
         run: pip install pyyaml==6.0.3
-      - name: Verify ci.yaml matches .pre-commit-config.yaml
+      - name: Verify ci.yaml tool versions resolve from .pre-commit-config.yaml
         run: python3 scripts/verify_tool_parity.py
 
   tests:
