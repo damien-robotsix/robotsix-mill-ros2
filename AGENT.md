@@ -12,10 +12,16 @@ that declares which downstream repositories to clone and from where.
 .
 ├── repos.yaml                    # vcs2l manifest: declares repos to clone into src/
 ├── scripts/update_workspace.sh   # runs `vcs import` + `vcs pull` from repos.yaml
+├── scripts/verify_refs.sh        # checks every repos.yaml `version:` resolves on its remote (network; `just verify-refs`)
+├── scripts/verify_tool_parity.py # checks CI lint pins match pre-commit hook `rev:`s
+├── tests/run_tests.sh            # offline shell regression tests (`just test`)
+├── justfile                      # task runner: check, check-all, test, lint-* recipes
+├── .devcontainer/                # devcontainer: Dockerfile, devcontainer.json, post-create.sh
 ├── src/                          # ephemeral checkout (git-ignored)
 ├── .robotsix-mill/config.yaml    # robotsix-mill test gate (yamllint + vcs validate)
-├── .github/workflows/ci.yaml     # CI: yamllint, shellcheck, vcs validate, actionlint, codespell
-├── .robotsix-mill/periodic/      # periodic workflow stubs: agent_check, audit, completeness_check, copy_paste, health, repo_description_sync, survey
+├── .github/workflows/ci.yaml     # CI: lint matrix (yamllint, shellcheck, vcs validate, codespell, markdownlint, actionlint, hadolint), reuse, pre-commit, version-parity, tests
+├── .github/workflows/lint-workflows.yml # actionlint + zizmor via the fleet reusable workflow
+├── .robotsix-mill/periodic/      # periodic workflow stubs: agent_check, audit, completeness_check, copy_paste, health, repo_description_sync, survey, triage_boilerplate
 ├── .pre-commit-config.yaml       # pre-commit hooks
 ├── ARCHITECTURE.md               # design rationale
 ├── CONTRIBUTING.md               # contribution guide
