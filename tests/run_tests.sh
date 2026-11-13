@@ -322,18 +322,17 @@ EOF
 }
 
 # Scenario: load the committed ci.yaml / .pre-commit-config.yaml through the
-# script's own loaders and assert the set of tools it would actually compare
-# equals the expected shared set. If an upstream CI `name:` or hook `id:` is
-# renamed, its mapping lookup returns None, the tool drops out of `common`,
-# and this fails loudly instead of letting its drift go silently unchecked.
-# Computed from the loaders (not the pass/fail output) so it holds regardless
-# of whether versions are currently aligned.
+# script's own loaders and assert that every expected lint tool is sourced
+# from .pre-commit-config.yaml (a `tool:` matrix key, no duplicated
+# `version:` pin) and resolves to a hook rev there. If a hook `id:` is
+# renamed, its mapping lookup returns None and this fails loudly instead of
+# letting CI install an unresolved version.
 test_parity_all_tools_compared() {
   local case_out case_err
   case_out="${WORK_DIR}/parity-all-out"
   case_err="${WORK_DIR}/parity-all-err"
   run "${case_out}" "${case_err}" \
-    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; ci = v.load_ci_versions('${REPO_ROOT}/.github/workflows/ci.yaml'); pc = v.load_pre_commit_versions('${REPO_ROOT}/.pre-commit-config.yaml'); common = set(ci) & set(pc); expected = {'hadolint', 'yamllint', 'shellcheck', 'actionlint', 'codespell', 'markdownlint'}; assert common == expected, 'compared set drifted from expected: %r' % (common ^ expected,); print('parity-set-ok')"
+    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; sourced = set(v.load_ci_sourced_tools('${REPO_ROOT}/.github/workflows/ci.yaml')); pc = v.load_pre_commit_versions('${REPO_ROOT}/.pre-commit-config.yaml'); expected = {'hadolint', 'yamllint', 'shellcheck', 'actionlint', 'codespell', 'markdownlint'}; assert sourced == expected, 'sourced set drifted from expected: %r' % (sourced ^ expected,); missing = expected - set(pc); assert not missing, 'unresolvable from .pre-commit-config.yaml: %r' % (missing,); dup = expected & set(v.load_ci_versions('${REPO_ROOT}/.github/workflows/ci.yaml')); assert not dup, 'duplicated ci.yaml version pins: %r' % (dup,); print('parity-set-ok')"
   assert_status "parity-all-tools" 0 "${status}" "${case_err}"
   assert_out_contains "parity-all-tools" "parity-set-ok" "${case_out}"
 }
@@ -362,6 +361,71 @@ EOF
     bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py' _ "${case_dir}"
   assert_status "parity-drift" 1 "${status}" "${case_err}"
   assert_err_contains "parity-drift" "VERSION DRIFT: yamllint" "${case_err}"
+}
+
+# Scenario: `--resolve <tool>` prints the version CI installs, taken from
+# the hook `rev:` (v prefix stripped, hadolint hook counter removed), and
+# exits 1 for a tool with no pinned hook. The no-argument self-check must
+# fail when a `tool:` matrix entry cannot be resolved.
+test_parity_resolve() {
+  local case_dir case_out case_err
+  case_dir="${WORK_DIR}/parity-resolve"
+  case_out="${case_dir}/out"
+  case_err="${case_dir}/err"
+  mkdir -p "${case_dir}/scripts" "${case_dir}/.github/workflows"
+  cp "${REPO_ROOT}/scripts/verify_tool_parity.py" "${case_dir}/scripts/"
+  cat >"${case_dir}/.github/workflows/ci.yaml" <<'EOF'
+jobs:
+  lint:
+    strategy:
+      matrix:
+        include:
+          - name: Markdown Lint
+            tool: markdownlint
+          - name: Docker Lint
+            tool: hadolint
+EOF
+  cat >"${case_dir}/.pre-commit-config.yaml" <<'EOF'
+repos:
+  - repo: https://example.invalid/markdownlint
+    rev: v0.50.0
+    hooks:
+      - id: markdownlint
+  - repo: https://example.invalid/hadolint
+    rev: v2.15.1.2
+    hooks:
+      - id: hadolint
+EOF
+  # shellcheck disable=SC2016  # $1/$2 are expanded by the inner `bash -c`
+  run "${case_out}" "${case_err}" \
+    bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py --resolve "$2"' _ "${case_dir}" markdownlint
+  assert_status "parity-resolve (markdownlint)" 0 "${status}" "${case_err}"
+  assert_out_contains "parity-resolve (markdownlint)" "0.50.0" "${case_out}"
+  # shellcheck disable=SC2016
+  run "${case_out}" "${case_err}" \
+    bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py --resolve "$2"' _ "${case_dir}" hadolint
+  assert_status "parity-resolve (hadolint)" 0 "${status}" "${case_err}"
+  if [ "$(cat "${case_out}")" != "2.15.1" ]; then
+    fail "parity-resolve (hadolint): expected 2.15.1, got '$(cat "${case_out}")'"
+  fi
+  # shellcheck disable=SC2016
+  run "${case_out}" "${case_err}" \
+    bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py --resolve "$2"' _ "${case_dir}" yamllint
+  assert_status "parity-resolve (unresolved)" 1 "${status}" "${case_err}"
+  assert_err_contains "parity-resolve (unresolved)" "UNRESOLVED: yamllint" "${case_err}"
+  # shellcheck disable=SC2016
+  run "${case_out}" "${case_err}" \
+    bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py' _ "${case_dir}"
+  assert_status "parity-resolve (self-check ok)" 0 "${status}" "${case_err}"
+  cat >>"${case_dir}/.github/workflows/ci.yaml" <<'EOF'
+          - name: YAML Lint
+            tool: yamllint
+EOF
+  # shellcheck disable=SC2016
+  run "${case_out}" "${case_err}" \
+    bash -c 'cd "$1" && exec python3 scripts/verify_tool_parity.py' _ "${case_dir}"
+  assert_status "parity-resolve (self-check unresolved)" 1 "${status}" "${case_err}"
+  assert_err_contains "parity-resolve (self-check unresolved)" "UNRESOLVED: yamllint" "${case_err}"
 }
 
 # Scenario: normalize_hadolint() must strip the shenxianpeng hook's trailing
@@ -511,10 +575,12 @@ main() {
   run_case "stale-ref-detection" test_stale_ref_detection
   info "verify_refs.sh: all refs pass"
   run_case "all-refs-pass" test_all_refs_pass
-  info "verify_tool_parity.py: all expected tools are compared"
+  info "verify_tool_parity.py: all expected tools sourced from .pre-commit-config.yaml"
   run_case "parity-all-tools-compared" test_parity_all_tools_compared
   info "verify_tool_parity.py: version drift fails loudly"
   run_case "parity-drift-detected" test_parity_drift_detected
+  info "verify_tool_parity.py: --resolve sources versions from .pre-commit-config.yaml"
+  run_case "parity-resolve" test_parity_resolve
   info "verify_tool_parity.py: normalize_hadolint strips hook counter"
   run_case "parity-normalize-hadolint" test_parity_normalize_hadolint
   info "ARCHITECTURE.md: every periodic stub is documented"
