@@ -158,12 +158,13 @@ declares `languages: [shell]`, a `test_command` running
 `yamllint --strict . && python3 -m vcs2l.commands.vcs validate --input
 repos.yaml`, and `extra_sandbox_packages: [pip:yamllint, pip:vcs2l==1.1.7]`.
 The `.robotsix-mill/periodic/` directory holds built-in workflow stubs
-for eight periodic (scheduled) workflows:
+for nine periodic (scheduled) workflows:
 [`agent_check`](.robotsix-mill/periodic/agent_check.yaml),
 [`audit`](.robotsix-mill/periodic/audit.yaml),
 [`completeness_check`](.robotsix-mill/periodic/completeness_check.yaml),
 [`copy_paste`](.robotsix-mill/periodic/copy_paste.yaml),
 [`health`](.robotsix-mill/periodic/health.yaml),
+[`pin_bump`](.robotsix-mill/periodic/pin_bump.yaml),
 [`repo_description_sync`](.robotsix-mill/periodic/repo_description_sync.yaml),
 [`survey`](.robotsix-mill/periodic/survey.yaml), and
 [`triage_boilerplate`](.robotsix-mill/periodic/triage_boilerplate.yaml).
