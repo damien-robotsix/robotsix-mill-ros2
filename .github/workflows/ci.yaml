@@ -114,7 +114,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install reuse
-        run: pip install "reuse==6.2.0"
+        run: pip install "reuse==6.3.0"
       - name: Check REUSE compliance
         run: reuse lint
 
