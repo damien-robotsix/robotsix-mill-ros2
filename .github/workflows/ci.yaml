@@ -45,7 +45,7 @@ jobs:
           - name: Markdown Lint
             recipe: lint-markdown
             npm: markdownlint-cli
-            version: "0.49.1"
+            version: "0.50.0"
           - name: Actionlint
             recipe: lint-actions
             actionlint: true
