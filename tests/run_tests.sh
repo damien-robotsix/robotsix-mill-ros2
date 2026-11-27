@@ -395,6 +395,37 @@ test_periodic_stubs_documented() {
   fi
 }
 
+# Scenario: ARCHITECTURE.md states the same workflow-level `permissions:`
+# value as .github/workflows/ci.yaml. The first `^permissions:` line (the
+# `on:`/`name:` block precedes it) is the workflow-level value; any job-level
+# `permissions:` block comes later. Self-discovering: if ci.yaml's
+# workflow-level value ever changes, the doc must be updated to match.
+test_ci_permissions_documented() {
+  local value
+  value="$(awk '/^permissions:/{print $2; exit}' "${REPO_ROOT}/.github/workflows/ci.yaml")"
+  if ! grep -q -F -- "permissions: ${value}" "${REPO_ROOT}/ARCHITECTURE.md"; then
+    fail "ci-permissions-documented: ARCHITECTURE.md does not state workflow-level permissions: ${value}"
+  fi
+}
+
+# Scenario: ARCHITECTURE.md enumerates every recipe the justfile `check`
+# aggregate runs, so the prose list cannot silently drop a lint when the
+# aggregate gains one. The dependency list is sourced from the justfile
+# `check:` line itself, so the test self-discovers instead of hardcoding
+# the recipe set.
+test_ci_just_recipes_documented() {
+  local recipe missing
+  missing=""
+  for recipe in $(sed -n 's/^check: //p' "${REPO_ROOT}/justfile"); do
+    if ! grep -q -F -- "${recipe}" "${REPO_ROOT}/ARCHITECTURE.md"; then
+      missing="${missing} ${recipe}"
+    fi
+  done
+  if [ -n "${missing}" ]; then
+    fail "ci-just-recipes-documented: ARCHITECTURE.md does not reference recipe(s):${missing}"
+  fi
+}
+
 # The four files that each pin vcs2l (relative to a repository root). They
 # must all agree on one version so the local bootstrap, the mill sandbox, the
 # devcontainer and CI cannot run different vcs2l releases.
@@ -519,6 +550,10 @@ main() {
   run_case "parity-normalize-hadolint" test_parity_normalize_hadolint
   info "ARCHITECTURE.md: every periodic stub is documented"
   run_case "periodic-stubs-documented" test_periodic_stubs_documented
+  info "ARCHITECTURE.md: CI workflow permissions statement matches ci.yaml"
+  run_case "ci-permissions-documented" test_ci_permissions_documented
+  info "ARCHITECTURE.md: every just check recipe is documented"
+  run_case "ci-just-recipes-documented" test_ci_just_recipes_documented
   info "vcs2l: version pinned consistently across CI, devcontainer, script, mill config"
   run_case "vcs2l-version-parity" test_vcs2l_version_parity
 

@@ -134,10 +134,11 @@ conceptually rather than where they happen to be hosted.
 
 The skeleton's CI ([`.github/workflows/ci.yaml`](.github/workflows/ci.yaml),
 running on `ubuntu-24.04` for pushes and pull requests to `main` with
-`permissions: read-all`) validates the *skeleton itself*, not the
+`permissions: {}`) validates the *skeleton itself*, not the
 downstream package builds. The lint commands are defined in the
 [`justfile`](justfile) as individual recipes (`lint-yaml`, `lint-shell`,
-`lint-spelling`, `validate-manifest`, `lint-actions`) and can be run
+`lint-spelling`, `lint-markdown`, `lint-docker`, `validate-manifest`,
+`lint-actions`, `lint-security`, `lint-reuse`) and can be run
 all together with `just check`. The CI matrix invokes each recipe via
 `just ${{ matrix.recipe }}`, and a `pre-commit` job enforces hooks
 not covered by the lint matrix. Security auditing of GitHub Actions
