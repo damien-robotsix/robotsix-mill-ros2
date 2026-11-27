@@ -416,11 +416,14 @@ test_ci_permissions_documented() {
 test_ci_just_recipes_documented() {
   local recipe missing
   missing=""
-  for recipe in $(sed -n 's/^check: //p' "${REPO_ROOT}/justfile"); do
+  # The justfile `check:` aggregate lists every recipe on one space-separated
+  # line; split it onto one recipe per line so `while read` iterates the same
+  # word set the old `for recipe in $(...)` loop did (without SC2013).
+  while read -r recipe; do
     if ! grep -q -F -- "${recipe}" "${REPO_ROOT}/ARCHITECTURE.md"; then
       missing="${missing} ${recipe}"
     fi
-  done
+  done < <(sed -n 's/^check: //p' "${REPO_ROOT}/justfile" | tr ' ' '\n')
   if [ -n "${missing}" ]; then
     fail "ci-just-recipes-documented: ARCHITECTURE.md does not reference recipe(s):${missing}"
   fi
