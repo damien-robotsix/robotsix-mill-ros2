@@ -333,7 +333,7 @@ test_parity_all_tools_compared() {
   case_out="${WORK_DIR}/parity-all-out"
   case_err="${WORK_DIR}/parity-all-err"
   run "${case_out}" "${case_err}" \
-    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; ci = v.load_ci_versions('${REPO_ROOT}/.github/workflows/ci.yaml'); pc = v.load_pre_commit_versions('${REPO_ROOT}/.pre-commit-config.yaml'); common = set(ci) & set(pc); expected = {'hadolint', 'yamllint', 'shellcheck', 'actionlint', 'codespell', 'markdownlint'}; assert common == expected, 'compared set drifted from expected: %r' % (common ^ expected,); print('parity-set-ok')"
+    python3 -c "import sys; sys.path.insert(0, '${REPO_ROOT}/scripts'); import verify_tool_parity as v; ci = v.load_ci_versions('${REPO_ROOT}/.github/workflows/ci.yaml'); pc = v.load_pre_commit_versions('${REPO_ROOT}/.pre-commit-config.yaml'); common = set(ci) & set(pc); expected = {'hadolint', 'yamllint', 'shellcheck', 'actionlint', 'codespell', 'markdownlint', 'reuse'}; assert common == expected, 'compared set drifted from expected: %r' % (common ^ expected,); print('parity-set-ok')"
   assert_status "parity-all-tools" 0 "${status}" "${case_err}"
   assert_out_contains "parity-all-tools" "parity-set-ok" "${case_out}"
 }

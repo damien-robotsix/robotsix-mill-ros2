@@ -8,7 +8,8 @@ The same lint/scan tools are pinned by exact version in two places: the CI
 workflow (lint-matrix `version:` values) and the pre-commit hooks (`rev:` tags). These must not drift, otherwise CI and
 local pre-commit can disagree on a finding. This script fails the build when
 a tool present in both files has differing versions, so a one-off alignment
-cannot silently recur.
+cannot silently recur. reuse is compared too, even though the CI job
+installs it outside the lint matrix via `pip install "reuse==<version>"`.
 
 Tools that only appear in one file (e.g. vcs2l, which is a local hook with
 no `rev:`, or zizmor, which CI runs via the fleet-managed reusable
@@ -16,6 +17,7 @@ lint-workflows.yml rather than a pinned ci.yaml job) are intentionally not
 compared.
 """
 
+import re
 import sys
 
 import yaml
@@ -39,6 +41,7 @@ HOOK_TO_TOOL = {
     "yamllint": "yamllint",
     "codespell": "codespell",
     "markdownlint": "markdownlint",
+    "reuse": "reuse",
 }
 
 
@@ -53,6 +56,15 @@ def load_ci_versions(workflow):
         tool = CI_NAME_TO_TOOL.get(entry.get("name", ""))
         if tool and entry.get("version"):
             versions[tool] = str(entry["version"])
+    # The CI `reuse` job installs reuse outside the lint matrix (a dedicated
+    # job with a `pip install "reuse==<version>"` step), so the matrix walker
+    # above never sees it. Pin it explicitly so a CI reuse bump cannot drift
+    # from the pre-commit reuse hook rev undetected.
+    for step in jobs.get("reuse", {}).get("steps", []):
+        match = re.search(r"reuse==([0-9][0-9.]*)", step.get("run", ""))
+        if match:
+            versions["reuse"] = match.group(1)
+            break
     return versions
 
 
